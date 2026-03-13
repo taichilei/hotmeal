@@ -11,6 +11,7 @@ import uviewPlus from 'uview-plus'
 import {createPinia} from 'pinia'
 // 引入 pinia-plugin-persistedstate 插件,需要自定义存储方式
 import {createPersistedState} from 'pinia-plugin-persistedstate'
+import i18n from './i18n'
 
 
 export function createApp() {
@@ -28,6 +29,8 @@ export function createApp() {
     app.use(pinia)
     // 挂载 uview-plus 插件
     app.use(uviewPlus)
+    // 挂载国际化插件
+    app.use(i18n)
     return {
         app,
     };

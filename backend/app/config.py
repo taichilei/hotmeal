@@ -49,33 +49,17 @@ def _get_bool_env_var(var_name: str, default: bool = False) -> bool:
 
 def validate_config() -> Dict[str, Any]:
     """验证必需的环境变量。"""
-    # --- 调整：只检查必需项，值在 Config 类中获取 ---
+    # --- 调整：SQLite 模式下只需要 SECRET_KEY ---
     required_vars_desc = {
-        'DB_USER': '数据库用户名',
-        'DB_PASSWORD': '数据库密码',
-        'DB_HOST': '数据库主机地址',
-        'DB_PORT': '数据库端口',
-        'DB_NAME': '数据库名称',
         'SECRET_KEY': 'Flask 应用密钥',  # JWT 会优先使用 JWT_SECRET_KEY 或回退到此
-        # 以下变量有默认值，设为可选
-        # 'DB_POOL_SIZE': '数据库连接池大小',
-        # 'DB_POOL_TIMEOUT': '数据库连接池超时',
-        # 'DB_POOL_RECYCLE': '数据库连接池回收时间',
-        # 'LOG_LEVEL': '日志级别',
-        # 'LOG_FILE': '日志文件路径',
-        # 'LOG_MAX_BYTES': '日志文件最大大小',
-        # 'LOG_BACKUP_COUNT': '日志备份数量',
-        # 'CACHE_TYPE': '缓存类型'
     }
 
     missing_vars = []
-    config_values = {}  # 这个字典其实可以不用返回了
 
     for var, description in required_vars_desc.items():
         value = os.getenv(var)
         if not value:
             missing_vars.append(f"{var} ({description})")
-        # config_values[var] = value # 不再需要填充这个字典
 
     if missing_vars:
         logger.critical("错误：缺少必要的环境变量:")  # 使用 CRITICAL 级别
@@ -117,15 +101,10 @@ class Config:
     SQLALCHEMY_ECHO = _get_bool_env_var('SQLALCHEMY_ECHO', False)
 
     # Build database URI (确保必需变量已存在)
-    if all([DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME]):
-        SQLALCHEMY_DATABASE_URI = (
-            f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@"
-            f"{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
-        )
-    else:
-        # 这个分支理论上不会进入，因为 validate_config 会检查
-        SQLALCHEMY_DATABASE_URI = None
-        logger.error("数据库连接信息不完整，SQLALCHEMY_DATABASE_URI 未能构建！")
+    # 使用 SQLite 数据库用于演示，无需 MySQL
+    basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'hotmeal.db')}"
+    logger.info(f"使用 SQLite 数据库: {SQLALCHEMY_DATABASE_URI}")
 
     # External API configuration
     DEEPSEEK_API_KEY = _get_env_var('DEEPSEEK_API_KEY', '')

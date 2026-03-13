@@ -50,8 +50,8 @@ if __name__ == '__main__':
 
     # 使用 app.run 运行开发服务器
     # 生产环境应使用 Gunicorn/uWSGI
+    # 演示版本暂时使用 HTTP，无需 SSL 证书
     app.run(host=host,
             port=port,
-            debug=debug_mode,
-            ssl_context=(cert_file, key_file)# 启用 HTTPS
+            debug=debug_mode
             )

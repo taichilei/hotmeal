@@ -1,0 +1,84 @@
+{
+  "common": {
+    "confirm": "确定",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "submit": "提交",
+    "loading": "加载中...",
+    "success": "操作成功",
+    "error": "操作失败",
+    "networkError": "网络错误，请稍后重试"
+  },
+  "tabbar": {
+    "home": "首页",
+    "cart": "购物车",
+    "profile": "我的"
+  },
+  "home": {
+    "title": "点餐系统",
+    "recommend": "推荐菜品",
+    "categories": "菜品分类",
+    "dishes": "菜品列表",
+    "searchPlaceholder": "搜索菜品名称"
+  },
+  "cart": {
+    "title": "购物车",
+    "empty": "购物车是空的",
+    "total": "合计",
+    "settle": "去结算",
+    "clear": "清空购物车",
+    "deleteConfirm": "确定要删除这个商品吗？"
+  },
+  "order": {
+    "title": "我的订单",
+    "detail": "订单详情",
+    "pay": "支付订单",
+    "paySuccess": "支付成功",
+    "orderNo": "订单号",
+    "createTime": "下单时间",
+    "payTime": "支付时间",
+    "totalAmount": "订单金额",
+    "status": {
+      "pending": "待支付",
+      "paid": "已支付",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    }
+  },
+  "profile": {
+    "title": "个人中心",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "myOrders": "我的订单",
+    "editProfile": "编辑资料",
+    "settings": "账号设置",
+    "about": "关于我们",
+    "nickname": "昵称",
+    "phone": "手机号",
+    "avatar": "头像"
+  },
+  "auth": {
+    "login": "用户登录",
+    "register": "用户注册",
+    "username": "用户名",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "phone": "手机号",
+    "loginNow": "立即登录",
+    "registerNow": "立即注册",
+    "noAccount": "还没有账号？",
+    "hasAccount": "已有账号？",
+    "usernameRequired": "请输入用户名",
+    "passwordRequired": "请输入密码",
+    "passwordNotMatch": "两次输入的密码不一致"
+  },
+  "dish": {
+    "sales": "已售",
+    "rating": "评分",
+    "addToCart": "加入购物车",
+    "buyNow": "立即购买"
+  }
+}
