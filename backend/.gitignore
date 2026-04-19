@@ -61,3 +61,7 @@ migrations/
 # pytest 缓存
 .pytest_cache/
 /tests/
+
+# AI 客户端生成的上下文文件
+CLAUDE.md
+claude.md
