@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/routes/tag_routes.py
 @description  This file provides the API routes for tag management.
@@ -6,10 +5,17 @@
 @author       taichilei
 """
 
-from app.services.tag_service import get_all_tags, create_tag, get_tag_by_id, update_tag, delete_tag
-from app.services.tag_service import get_tag_list
 from flask import request
 from flask_restx import Namespace, Resource, fields
+
+from app.services.tag_service import (
+    create_tag,
+    delete_tag,
+    get_all_tags,
+    get_tag_by_id,
+    get_tag_list,
+    update_tag,
+)
 
 # --- Namespace 定义 ---
 # 保持路径为复数形式

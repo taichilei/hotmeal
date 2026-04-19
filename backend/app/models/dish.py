@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 File Name:     /app/models/dish.py
 Project:       hotmeal
@@ -11,15 +10,22 @@ import logging
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from typing import Dict, Any, Optional, TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import ForeignKey, String, Integer, Boolean, DateTime, Numeric, func, Index
-
-from sqlalchemy.orm import validates, relationship, backref, Mapped, mapped_column
-
-from app.utils.db import db
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    Numeric,
+    String,
+    func,
+)
+from sqlalchemy.orm import Mapped, backref, mapped_column, relationship, validates
 
 from app.models.tag import Tag, dish_tags
+from app.utils.db import db
 
 if TYPE_CHECKING:
     from app.models.category import Category
@@ -47,14 +53,14 @@ class Dish(db.Model):
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=Decimal("0.00"),
                                            comment="菜品价格")
     stock: Mapped[int] = mapped_column(Integer, nullable=False, default=0, comment="库存数量")
-    image_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    image_url: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                      comment="菜品图片链接")
     sales: Mapped[int] = mapped_column(Integer, nullable=False, default=0, comment="已售数量")
     rating: Mapped[Decimal] = mapped_column(Numeric(3, 2), nullable=False, default=Decimal("0.00"),
                                             comment="菜品评分 (0.00-5.00)")
-    description: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    description: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                        comment="菜品描述")
-    category_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('category.category_id',
+    category_id: Mapped[int | None] = mapped_column(Integer, ForeignKey('category.category_id',
                                                                            name='fk_dish_category_id',
                                                                            ondelete="SET NULL"),
                                                        nullable=True, comment="所属分类ID")
@@ -65,7 +71,7 @@ class Dish(db.Model):
                                                  comment="最后更新时间")
     is_available: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True,
                                                comment="是否上架")
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True,
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True,
                                                            comment="删除时间（软删除）")
 
 
@@ -73,7 +79,7 @@ class Dish(db.Model):
     # --- 直接使用 relationship 和 backref (从 sqlalchemy.orm 导入) ---
     category: Mapped[Optional["Category"]] = relationship("Category",
                                                           backref=backref("dishes", lazy="dynamic"))
-    tags: Mapped[List["Tag"]] = relationship(
+    tags: Mapped[list["Tag"]] = relationship(
         "Tag",
         secondary=dish_tags,
         backref=backref("dishes", lazy="dynamic")
@@ -152,7 +158,7 @@ class Dish(db.Model):
     def __repr__(self):
         return f"<Dish {self.name} (ID: {self.dish_id}, Price: {self.price:.2f}, Stock: {self.stock})>"
 
-    def to_dict(self, include_category_name: bool = True) -> Dict[str, Any]:
+    def to_dict(self, include_category_name: bool = True) -> dict[str, Any]:
         """将菜品对象转换为适合 JSON 序列化的字典。"""
         data = {
             "dish_id": self.dish_id,

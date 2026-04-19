@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
 """
 @File       : logger.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Description: Provides function to set up application logging based on Flask config.
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
 
 """
 
-import os
 import logging
 import logging.config  # 导入 logging.config
+import os
 import time
-from typing import Dict, Any  # 导入类型提示
+from typing import Any  # 导入类型提示
 
 try:
     from zoneinfo import ZoneInfo
@@ -65,7 +64,7 @@ def beijing_time(*args):
     return time.localtime(time.mktime(time.gmtime()) + 8 * 3600)
 
 
-def setup_logging(config: Dict[str, Any], app_name: str = "hotmeal"):
+def setup_logging(config: dict[str, Any], app_name: str = "hotmeal"):
     """
     根据 Flask 应用配置设置日志系统。
 
@@ -80,7 +79,6 @@ def setup_logging(config: Dict[str, Any], app_name: str = "hotmeal"):
     log_backup_count = config.get('LOG_BACKUP_COUNT', 5)
     log_handler_type = config.get('LOG_HANDLER_TYPE', 'rotating').lower()  # rotating or timed
     log_format_type = config.get('LOG_FORMAT', 'default').lower()  # default or json
-    log_timezone = config.get('LOG_TIMEZONE', 'Asia/Shanghai')  # 添加时区配置
 
     # 自动创建日志目录
     log_dir = os.path.dirname(log_file)
@@ -139,7 +137,7 @@ def setup_logging(config: Dict[str, Any], app_name: str = "hotmeal"):
     # formatter_class_obj = BeijingFormatter if log_timezone == 'Asia/Shanghai' else logging.Formatter
 
     # --- 构建 dictConfig ---
-    logging_config: Dict[str, Any] = {
+    logging_config: dict[str, Any] = {
         "version": 1,
         "disable_existing_loggers": False,  # 不禁用现有 logger (如 Flask 的)
         "formatters": {

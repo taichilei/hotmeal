@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : json_encoder.py
 @Date       : 2025-03-01
@@ -7,11 +6,12 @@
 
 """
 
-from flask.json.provider import DefaultJSONProvider
 from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum
 from uuid import UUID
+
+from flask.json.provider import DefaultJSONProvider
 
 
 class CustomJSONProvider(DefaultJSONProvider):

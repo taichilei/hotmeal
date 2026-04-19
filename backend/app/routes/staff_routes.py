@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/routes/staff_routes.py
 @description  （这里写这个模块/脚本的功能简述）
@@ -10,13 +9,13 @@ import logging
 from http import HTTPStatus
 
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restx import Namespace, Resource, fields
 
 from app.models.enums import UserRole
 from app.services.staff_service import create_staff_user
-from app.utils.decorators import require_roles, log_request, timing
-from app.utils.response import success, created, unauthorized
+from app.utils.decorators import log_request, require_roles, timing
+from app.utils.response import created, success, unauthorized
 
 logger = logging.getLogger(__name__)
 staff_ns = Namespace("staff", description="员工管理接口", path="/staff")

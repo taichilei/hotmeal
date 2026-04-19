@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : user.py
 @Author     : ChiLei Tai JOU
@@ -12,20 +11,21 @@
 import logging
 import re
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any, List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import String, Integer, DateTime, Enum as DBEnum, func, Index
-from sqlalchemy.orm import validates, relationship, Mapped, mapped_column
-from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import DateTime, Index, Integer, String, func
+from sqlalchemy import Enum as DBEnum
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.models.enums import UserRole, UserStatus
 from app.utils.db import db
 
 # 处理循环引用
 if TYPE_CHECKING:
-    from .order import Order
-    from .dining_area import DiningArea
     from .chat import Chat
+    from .dining_area import DiningArea
+    from .order import Order
 
 logger = logging.getLogger(__name__)
 
@@ -50,13 +50,13 @@ class User(db.Model):
                                          comment="登录账号")
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False,
                                                comment="密码哈希 (Werkzeug)")
-    phone_number: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, unique=True,
+    phone_number: Mapped[str | None] = mapped_column(String(20), nullable=True, unique=True,
                                                         comment="手机号")  # 调整长度
-    username: Mapped[Optional[str]] = mapped_column(String(50), nullable=True,
+    username: Mapped[str | None] = mapped_column(String(50), nullable=True,
                                                     comment="昵称/显示名称")  # 调整长度
-    avatar_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    avatar_url: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                       comment="用户头像URL")
-    email: Mapped[Optional[str]] = mapped_column(String(120), nullable=True, unique=True,
+    email: Mapped[str | None] = mapped_column(String(120), nullable=True, unique=True,
                                                  comment="邮箱")  # 邮箱通常唯一
     role: Mapped[UserRole] = mapped_column(DBEnum(UserRole, name="user_role_enum"), nullable=False,
                                            default=UserRole.USER,
@@ -65,24 +65,24 @@ class User(db.Model):
                                                nullable=False, default=UserStatus.ACTIVE,
                                                server_default=UserStatus.ACTIVE.value,
                                                comment="用户状态")
-    favorite_cuisine: Mapped[Optional[str]] = mapped_column(String(50), nullable=True,
+    favorite_cuisine: Mapped[str | None] = mapped_column(String(50), nullable=True,
                                                             comment="用户偏好的菜系")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), comment="创建时间")
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), onupdate=func.now(),
                                                  comment="最后更新时间")
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True,
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True,
                                                            comment="删除时间（软删除）")
 
     # --- 关系定义 ---
     # 注意：如果 User 和 Order/DiningArea/Chat 有双向关系，需要在对方模型中定义 back_populates
-    orders: Mapped[List["Order"]] = relationship(back_populates="user", lazy="dynamic")
+    orders: Mapped[list["Order"]] = relationship(back_populates="user", lazy="dynamic")
     # 一个用户当前可能只占用一个区域
     occupied_area: Mapped[Optional["DiningArea"]] = relationship(back_populates="assigned_user",
                                                                  foreign_keys="DiningArea.assigned_user_id",
                                                                  uselist=False)  # use-list=False 表示一对一或多对一的反向
-    chats: Mapped[List["Chat"]] = relationship(back_populates="user", lazy="dynamic")
+    chats: Mapped[list["Chat"]] = relationship(back_populates="user", lazy="dynamic")
 
     # --- 密码处理方法 ---
     def set_password(self, password: str):
@@ -166,7 +166,7 @@ class User(db.Model):
         """检查用户是否处于活动状态。"""
         return self.status == UserStatus.ACTIVE and self.deleted_at is None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """将 User 对象转换为适合 JSON 序列化的字典。"""
         return {
             "user_id": self.user_id,

@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 """
 @File       : main.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Desc       : 应用入口文件。创建 Flask 应用实例并运行
 
 
 """
 
-import os
 import logging
+import os
 
 from dotenv import load_dotenv
 

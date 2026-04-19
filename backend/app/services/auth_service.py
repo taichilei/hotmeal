@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : auth_service.py
 @Date       : 2025-04-09 (Refactored: 2025-03-01)
@@ -8,6 +7,7 @@
 """
 
 import logging
+
 from flask_jwt_extended import create_access_token
 
 from app.models.user import User

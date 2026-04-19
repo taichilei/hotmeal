@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : restore_tables.py
 @Author     : ChiLei Tai
@@ -8,10 +7,11 @@
 @Version    : 1.1.1
 """
 
+from sqlalchemy.dialects.mysql import dialect as mysql_dialect
+from sqlalchemy.schema import CreateTable
+
 from app import create_app
 from app.utils.db import db
-from sqlalchemy.schema import CreateTable
-from sqlalchemy.dialects.mysql import dialect as mysql_dialect
 
 # 创建 Flask 应用（不连接数据库）
 app = create_app()

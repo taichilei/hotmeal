@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/models/tag.py
 @description  （这里写这个模块/脚本的功能简述）
@@ -7,7 +6,7 @@
 """
 
 # app/models/tag.py
-from sqlalchemy import Table, Column, Integer, ForeignKey, String, Index
+from sqlalchemy import Column, ForeignKey, Index, Integer, String, Table
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.utils.db import db

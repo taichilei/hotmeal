@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/services/order_service.py
 @description  order service
@@ -7,24 +6,28 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload, selectinload
 
-from app.models import Dish, Order, OrderItem, User, DiningArea
+from app.models import DiningArea, Dish, Order, OrderItem, User
 from app.models.enums import OrderState, PaymentMethod, UserRole
 from app.utils.db import db
 from app.utils.error_codes import ErrorCode
 from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError, AuthorizationError
+    APIException,
+    AuthorizationError,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
 )
 
 logger = logging.getLogger(__name__)
 
 
 # --- 辅助函数 ---
-def _serialize_order(order: Order, include_items: bool = True) -> Dict[str, Any]:
+def _serialize_order(order: Order, include_items: bool = True) -> dict[str, Any]:
     """序列化 Order 对象。"""
     if not isinstance(order, Order):
         logger.error(f"尝试序列化非 Order 对象: {type(order)}")
@@ -57,8 +60,8 @@ def _serialize_order(order: Order, include_items: bool = True) -> Dict[str, Any]
 
 # --- 创建订单 ---
 def create_order(user_id: int,
-                 dish_list: List[Dict[str, Any]],
-                 area_id: Optional[int]) -> Dict[str, Any]:
+                 dish_list: list[dict[str, Any]],
+                 area_id: int | None) -> dict[str, Any]:
     """
     创建新订单并添加菜品信息。
 
@@ -184,7 +187,7 @@ def create_order(user_id: int,
 
 
 # --- 查询订单 ---
-def get_order_by_id(order_id: int, include_items: bool = True) -> Dict[str, Any]:
+def get_order_by_id(order_id: int, include_items: bool = True) -> dict[str, Any]:
     """
     根据订单 ID 获取订单信息，可选是否包含订单项。
 
@@ -215,7 +218,7 @@ def get_order_by_id(order_id: int, include_items: bool = True) -> Dict[str, Any]
     return _serialize_order(order, include_items=include_items)
 
 
-def get_orders_by_user(user_id: int, include_items: bool = False) -> List[Dict[str, Any]]:
+def get_orders_by_user(user_id: int, include_items: bool = False) -> list[dict[str, Any]]:
     """
     获取指定用户的所有订单列表，可选是否包含订单项。
 
@@ -251,7 +254,7 @@ def get_orders_by_user(user_id: int, include_items: bool = False) -> List[Dict[s
 
 def list_all_orders(page: int = 1,
                     per_page: int = 10,
-                    include_items: bool = False) -> Dict[str, Any]:
+                    include_items: bool = False) -> dict[str, Any]:
     """
     获取所有订单的分页列表 (通常用于管理后台)，可选包含订单项。
 
@@ -308,7 +311,7 @@ def list_all_orders(page: int = 1,
 
 
 # --- 更新订单 ---
-def update_order_details(order_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+def update_order_details(order_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     """
     更新订单的详细信息 (例如状态、支付方式、凭证 URL)。
 
@@ -410,7 +413,7 @@ def update_order_details(order_id: int, update_data: Dict[str, Any]) -> Dict[str
 
 # --- 更新订单项数量 ---
 def update_order_item_quantity(order_id: int, order_item_id: int, quantity: int,
-                               operator_id: int) -> Dict[str, Any]:
+                               operator_id: int) -> dict[str, Any]:
     """
     更新订单中某个订单项的数量，并重新计算订单总价。
 

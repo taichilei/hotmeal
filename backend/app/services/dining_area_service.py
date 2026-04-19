@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : dining_area_service.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -8,29 +7,32 @@
 """
 
 import logging
-from typing import List, Dict, Any, Optional
-
+from typing import Any
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from app.utils.db import db
 from app.models.dining_area import DiningArea
-from app.models.enums import DiningAreaState, AreaType
+from app.models.enums import AreaType, DiningAreaState
 from app.models.user import User  # 需要导入 User 来检查用户是否存在
+from app.utils.db import db
+
+# 导入需要的错误码枚举
+from app.utils.error_codes import ErrorCode
 
 # 导入需要的异常类型
 from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError
+    APIException,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
 )
-# 导入需要的错误码枚举
-from app.utils.error_codes import ErrorCode
 
 logger = logging.getLogger(__name__)
 
 
 # --- 辅助函数 ---
 # 确认 _serialize_dining_area 函数名，或者直接使用模型的 to_dict
-def _serialize_dining_area(area: DiningArea) -> Dict[str, Any]:
+def _serialize_dining_area(area: DiningArea) -> dict[str, Any]:
     """内部辅助函数，用于序列化 DiningArea 对象。"""
     if not isinstance(area, DiningArea):
         logger.error(f"尝试序列化非 DiningArea 对象: {type(area)}")
@@ -40,9 +42,9 @@ def _serialize_dining_area(area: DiningArea) -> Dict[str, Any]:
 
 
 # --- 创建区域 ---
-def create_dining_area(area_name: str, max_capacity: Optional[int], area_type: AreaType,
+def create_dining_area(area_name: str, max_capacity: int | None, area_type: AreaType,
                        # max_capacity 改为可选
-                       state: DiningAreaState = DiningAreaState.FREE) -> Dict[str, Any]:
+                       state: DiningAreaState = DiningAreaState.FREE) -> dict[str, Any]:
     """
     创建新的用餐区域。
     """
@@ -109,13 +111,13 @@ def create_dining_area(area_name: str, max_capacity: Optional[int], area_type: A
             logger.error(f"创建用餐区域 '{clean_name}' 时发生数据库错误: {e}", exc_info=True)
             raise APIException("创建用餐区域失败，数据库错误。",
                                error_code=ErrorCode.DATABASE_ERROR.value)
-    except Exception as e:
+    except Exception:
         logger.exception("创建用餐区域时发生未知错误", exc_info=True)
         raise APIException("创建用餐区域失败，发生未知服务器错误。", error_code=ErrorCode.INTERNAL_SERVER_ERROR.value)
 
 
 # --- 查询区域 ---
-def get_dining_area(area_id: int) -> Dict[str, Any]:
+def get_dining_area(area_id: int) -> dict[str, Any]:
     """
     根据 ID 检索用餐区域记录。
     """
@@ -131,8 +133,8 @@ def get_dining_area(area_id: int) -> Dict[str, Any]:
     return _serialize_dining_area(area)  # 使用序列化函数
 
 
-def fetch_dining_areas(area_type: Optional[AreaType] = None,
-                       state: Optional[DiningAreaState] = None) -> List[Dict[str, Any]]:
+def fetch_dining_areas(area_type: AreaType | None = None,
+                       state: DiningAreaState | None = None) -> list[dict[str, Any]]:
     """
     检索所有用餐区域记录，可选按类型和状态过滤。
     """
@@ -162,7 +164,7 @@ def fetch_dining_areas(area_type: Optional[AreaType] = None,
 
 
 # --- 分配/占用区域 ---
-def assign_dining_area(area_id: int, user_id: int) -> Dict[str, Any]:
+def assign_dining_area(area_id: int, user_id: int) -> dict[str, Any]:
     """
     将一个空闲的用餐区域分配给指定用户。
     """
@@ -200,7 +202,7 @@ def assign_dining_area(area_id: int, user_id: int) -> Dict[str, Any]:
 
 
 # --- 释放区域 ---
-def release_dining_area(area_id: int) -> Dict[str, Any]:
+def release_dining_area(area_id: int) -> dict[str, Any]:
     """
     释放一个已被占用的用餐区域。
     """
@@ -231,7 +233,7 @@ def release_dining_area(area_id: int) -> Dict[str, Any]:
 
 
 # --- 更新区域信息 ---
-def update_dining_area(area_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+def update_dining_area(area_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     """
     更新用餐区域的信息 (通常由管理员操作)。
     """

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """
 @File       : decorators.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Desc       : General purpose decorators for Flask route handlers.
 
 
@@ -10,10 +9,14 @@
 import functools
 import logging
 import time
-from typing import Callable, Any, List, TypeVar, cast  # 导入 TypeVar, cast 用于泛型
+from collections.abc import Callable  # 导入 TypeVar, cast 用于泛型
+from typing import Any, TypeVar, cast
 
 from flask import request
-from flask_jwt_extended import get_jwt, jwt_required  # 移除 get_jwt_identity 如果确实不用
+from flask_jwt_extended import (  # 移除 get_jwt_identity 如果确实不用
+    get_jwt,
+    jwt_required,
+)
 
 from app.utils.error_codes import ErrorCode
 from app.utils.exceptions import AuthorizationError  # 导入需要的异常
@@ -40,7 +43,6 @@ def log_request(f: F) -> F:
     @functools.wraps(f)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         """Wrapper function for logging request."""
-        start_time = time.perf_counter()
         log_prefix = f"[请求 {request.method} {request.path}]"
         try:
             req_headers = dict(request.headers)
@@ -111,7 +113,7 @@ def timing(f: F) -> F:
     return cast(F, wrapper)
 
 
-def require_roles(allowed_roles: List[str]) -> Callable[[F], F]:
+def require_roles(allowed_roles: list[str]) -> Callable[[F], F]:
     """
     Decorator factory to ensure the current user has one of the specified roles.
 

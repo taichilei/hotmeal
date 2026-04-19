@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : order_item.py
 @Author     : ChiLei Tai JOU
@@ -11,18 +10,18 @@
 
 import logging
 from decimal import Decimal, InvalidOperation
-from typing import TYPE_CHECKING, Dict, Any
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import ForeignKey, Integer, Numeric
-from sqlalchemy.orm import relationship, validates, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.utils.db import db
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from .order import Order
     from .dish import Dish
+    from .order import Order
 
 
 class OrderItem(db.Model):
@@ -100,7 +99,7 @@ class OrderItem(db.Model):
             return Decimal("0.00")
         return Decimal(str(self.quantity)) * self.unit_price  # 确保是 Decimal 运算
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """将订单项对象转换为字典。"""
         # 确保 dish 对象已加载 (lazy='joined' 或服务层预加载)
         dish_name = self.dish.name if self.dish else "未知菜品"

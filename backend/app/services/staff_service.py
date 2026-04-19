@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/services/staff_service.py
 @description  staff user service
@@ -9,12 +8,11 @@
 import logging
 
 from werkzeug.exceptions import BadRequest, Conflict
-
-from app.models.user import User
-from app.models.enums import UserRole, UserStatus
-from app.utils.db import db
-
 from werkzeug.security import generate_password_hash
+
+from app.models.enums import UserRole, UserStatus
+from app.models.user import User
+from app.utils.db import db
 
 logger = logging.getLogger(__name__)
 

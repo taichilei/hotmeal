@@ -1,5 +1,6 @@
-import os
 import logging
+import os
+
 from llama_cpp import Llama
 
 # 全局变量，用于缓存本地模型实例，确保只加载一次

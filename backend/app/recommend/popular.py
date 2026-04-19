@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : popular.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -8,8 +7,7 @@
 """
 
 import logging
-
-from typing import List, Dict, Any
+from typing import Any
 
 from sqlalchemy import text
 
@@ -23,7 +21,7 @@ class PopularRecommender:
     基于流行度的推荐器，按过去 30 天内菜品在订单项中出现的次数进行排名。
     """
     @staticmethod
-    def get_popular_dishes(limit=10) -> List[Dict[str, Any]]:
+    def get_popular_dishes(limit=10) -> list[dict[str, Any]]:
         """
         返回过去 30 天内最受欢迎（按订单项数量）的 Top-N 菜品，包含菜品名称与销量。
 
@@ -70,7 +68,7 @@ class PopularRecommender:
             return []  # 出错时返回空列表
 
     @staticmethod
-    def get_popular_scores(limit=10) -> Dict[int, float]:
+    def get_popular_scores(limit=10) -> dict[int, float]:
         """
         返回过去 30 天内最受欢迎的菜品及其得分映射。
         用途：
@@ -106,7 +104,7 @@ class PopularRecommender:
             return {}
 
     @staticmethod
-    def get_normalized_popular_scores(limit=10) -> Dict[int, float]:
+    def get_normalized_popular_scores(limit=10) -> dict[int, float]:
         """
         返回归一化的热门菜品得分（销量归一化，总和为 1），用于推荐融合中的相对热度分数。
 

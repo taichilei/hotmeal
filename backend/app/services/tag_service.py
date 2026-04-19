@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/services/tag_service.py
 @description  This is the implementation of tag_service.
@@ -6,8 +5,8 @@
 @author       taichilei
 """
 
-from app.models.tag import Tag
 from app.models import db
+from app.models.tag import Tag
 
 
 def get_all_tags():

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : category_service.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -7,23 +6,28 @@
 """
 
 import logging
-from typing import Dict, List, Optional, Any
+from typing import Any
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.models.category import Category
 from app.utils.db import db
+
 # 导入需要的错误码枚举
 from app.utils.error_codes import ErrorCode
+
 # 导入需要的异常类型
 from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError
+    APIException,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
 )
 
 logger = logging.getLogger(__name__)
 
 
-def _serialize_category(category: Category) -> Dict[str, Any]:
+def _serialize_category(category: Category) -> dict[str, Any]:
     """内部辅助函数，用于序列化 Category 对象。"""
     if not isinstance(category, Category):
         logger.error(f"尝试序列化非 Category 对象: {type(category)}")
@@ -33,9 +37,9 @@ def _serialize_category(category: Category) -> Dict[str, Any]:
 
 
 # --- 创建分类 ---
-def create_category(name: str, description: Optional[str] = None,
-                    img_url: Optional[str] = None,
-                    parent_category_id: Optional[int] = None) -> Dict[str, Any]:
+def create_category(name: str, description: str | None = None,
+                    img_url: str | None = None,
+                    parent_category_id: int | None = None) -> dict[str, Any]:
     """
     创建新分类。
     """
@@ -95,7 +99,7 @@ def create_category(name: str, description: Optional[str] = None,
 
 
 # --- 查询分类 ---
-def get_category_by_id(category_id: int, include_deleted: bool = False) -> Dict[str, Any]:
+def get_category_by_id(category_id: int, include_deleted: bool = False) -> dict[str, Any]:
     """
     根据 ID 获取单个分类。
     """
@@ -117,7 +121,7 @@ def get_category_by_id(category_id: int, include_deleted: bool = False) -> Dict[
 
 
 def get_all_categories(include_deleted: bool = False,
-                       parent_id: Optional[int] = None) -> List[Dict[str, Any]]:
+                       parent_id: int | None = None) -> list[dict[str, Any]]:
     """
     获取所有分类，可选是否包含软删除的，或按父分类 ID 过滤。
     """
@@ -141,7 +145,7 @@ def get_all_categories(include_deleted: bool = False,
 
 
 # --- 更新分类 ---
-def update_category(category_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+def update_category(category_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     """
     更新现有分类的信息。
     """
@@ -258,7 +262,7 @@ def soft_delete_category(category_id: int) -> bool:
         raise APIException("软删除分类失败。", error_code=ErrorCode.DATABASE_ERROR.value)
 
 
-def restore_category(category_id: int) -> Dict[str, Any]:
+def restore_category(category_id: int) -> dict[str, Any]:
     """
     恢复软删除的分类 (清除 deleted_at 标记)。
     """

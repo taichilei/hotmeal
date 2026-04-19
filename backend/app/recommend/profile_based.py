@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : profile_based.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -9,9 +8,9 @@
 @Copyright  : Copyright © 2025. All rights reserved.
 """
 import logging
-from typing import Optional, Dict, cast
+from typing import cast
 
-from sqlalchemy import select, func, desc
+from sqlalchemy import desc, func, select
 
 from app.models.category import Category
 from app.models.dish import Dish
@@ -27,7 +26,7 @@ class ProfileRecommender:
     """基于用户画像（偏好菜系）推荐菜品，采用混合策略"""
 
     @staticmethod
-    def _get_explicit_preference(user_id: int) -> Optional[str]:
+    def _get_explicit_preference(user_id: int) -> str | None:
         """尝试获取用户明确设置的偏好菜系。"""
         if not hasattr(User, 'favorite_cuisine'):
             logger.error("User 模型缺少 'favorite_cuisine' 字段。")
@@ -46,7 +45,7 @@ class ProfileRecommender:
             return None
 
     @staticmethod
-    def _infer_preference_from_history(user_id: int) -> Optional[str]:
+    def _infer_preference_from_history(user_id: int) -> str | None:
         """根据用户历史订单推断最常点的菜系。"""
         logger.debug(f"尝试为用户 {user_id} 推断偏好菜系...")
         try:
@@ -74,7 +73,7 @@ class ProfileRecommender:
             logger.error(f"根据用户 {user_id} 历史订单推断偏好时出错: {ex}", exc_info=True)
             return None
 
-    def get_user_preference(self, user_id: int) -> Optional[str]:
+    def get_user_preference(self, user_id: int) -> str | None:
         """获取用户的最终偏好菜系 (混合策略)。"""
         preference = self._get_explicit_preference(user_id)
         if preference is not None:  # 显式比较
@@ -89,7 +88,7 @@ class ProfileRecommender:
                 logger.info(f"无法确定用户 {user_id} 的偏好菜系。")
                 return None
 
-    def recommend_by_profile(self, user_id: int, limit: int = 10) -> Dict[int, float]:
+    def recommend_by_profile(self, user_id: int, limit: int = 10) -> dict[int, float]:
         """
         根据用户的偏好菜系推荐菜品，返回归一化得分，用于融合推荐。
         返回格式：{dish_id: score}，score 为销量归一化权重（总和为 1）

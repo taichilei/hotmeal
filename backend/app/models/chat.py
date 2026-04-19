@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 File Name:     /app/models/chat.py
 Project:       hotmeal
@@ -10,15 +9,14 @@ Description:   chat model
 import logging
 import re
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import (ForeignKey, String, Integer, Text, DateTime, Float,
-                        Enum as DBEnum, func)  # 导入 func
-from sqlalchemy.orm import relationship, validates, Mapped, mapped_column
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, func
+from sqlalchemy import Enum as DBEnum  # 导入 func
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.models.enums import ChatStatus, MessageType
 from app.utils.db import db
-
 
 if TYPE_CHECKING:
     from .user import User
@@ -43,9 +41,9 @@ class Chat(db.Model):
     user_id: Mapped[int] = mapped_column(Integer,
                                          ForeignKey('user.user_id', name='fk_chat_user_id'),
                                          nullable=False, comment="所属用户ID")
-    question: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    question: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                     comment="用户提出的问题或内容")  # 长度限制
-    answer: Mapped[Optional[str]] = mapped_column(Text, nullable=True, comment="AI或人工回答的内容")
+    answer: Mapped[str | None] = mapped_column(Text, nullable=True, comment="AI或人工回答的内容")
     status: Mapped[ChatStatus] = mapped_column(DBEnum(ChatStatus, name="chat_status_enum"),
                                                nullable=False, default=ChatStatus.PENDING,
                                                comment="聊天状态")
@@ -55,20 +53,20 @@ class Chat(db.Model):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), onupdate=func.now(),
                                                  comment="最后更新时间")
-    response_time: Mapped[Optional[float]] = mapped_column(Float, nullable=True,
+    response_time: Mapped[float | None] = mapped_column(Float, nullable=True,
                                                            comment="AI响应时间（秒）")
-    confidence: Mapped[Optional[float]] = mapped_column(Float, nullable=True,
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True,
                                                         comment="AI回答置信度")
-    source: Mapped[Optional[str]] = mapped_column(String(50), nullable=True, default="AI",
+    source: Mapped[str | None] = mapped_column(String(50), nullable=True, default="AI",
                                                   comment="回答来源：AI/人工")
-    tags: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    tags: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                 comment="标签（逗号分隔）")  # 长度限制
     message_type: Mapped[MessageType] = mapped_column(DBEnum(MessageType, name="message_type_enum"),
                                                       nullable=False, default=MessageType.TEXT,
                                                       comment="消息类型")
-    response_duration: Mapped[Optional[float]] = mapped_column(Float, nullable=True,
+    response_duration: Mapped[float | None] = mapped_column(Float, nullable=True,
                                                                comment="生成答案所耗时长（秒）")
-    image_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    image_url: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                      comment="用户上传的图片链接")  # 长度限制
 
     # --- 关系定义 ---
@@ -119,7 +117,7 @@ class Chat(db.Model):
         return url
 
     # --- 实例方法 ---
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """将 Chat 实例转换为适合 JSON 序列化的字典。"""
         return {
             "chat_id": self.chat_id,

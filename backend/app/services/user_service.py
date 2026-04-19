@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : user_service.py
 @Date       : 2025-03-01
@@ -7,27 +6,29 @@
 """
 
 import logging
-from typing import List, Dict, Any
-
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from typing import Any
 
 from flask_sqlalchemy.pagination import Pagination
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from app.models.enums import UserRole, UserStatus
 from app.models.user import User
 from app.utils.db import db
-
 from app.utils.error_codes import ErrorCode
-
 from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError, AuthorizationError, BadRequestError
+    APIException,
+    AuthorizationError,
+    BadRequestError,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
 )
 
 logger = logging.getLogger(__name__)
 
 
 # --- 创建用户 ---
-def create_user(account: str, password: str, role_name: str = "USER") -> Dict[str, Any]:
+def create_user(account: str, password: str, role_name: str = "USER") -> dict[str, Any]:
     """
     创建新用户并存储加密密码。
 
@@ -78,7 +79,7 @@ def create_user(account: str, password: str, role_name: str = "USER") -> Dict[st
 
 
 # --- 查询用户 ---
-def get_user_by_id(user_id: int) -> Dict[str, Any]:
+def get_user_by_id(user_id: int) -> dict[str, Any]:
     """
     根据用户 ID 检索用户。
 
@@ -99,7 +100,7 @@ def get_user_by_id(user_id: int) -> Dict[str, Any]:
     return user.to_dict()
 
 
-def get_all_users() -> List[Dict[str, Any]]:
+def get_all_users() -> list[dict[str, Any]]:
     """
     检索所有状态为 ACTIVE 的用户。
 
@@ -120,7 +121,7 @@ def get_all_users() -> List[Dict[str, Any]]:
 
 
 # --- 按角色查询活跃用户 ---
-def get_users_by_role(role_name: str) -> List[Dict[str, Any]]:
+def get_users_by_role(role_name: str) -> list[dict[str, Any]]:
     """
     根据角色查询所有活跃用户。
 
@@ -150,7 +151,7 @@ def get_users_by_role(role_name: str) -> List[Dict[str, Any]]:
 
 
 # --- 分页获取指定角色的用户列表 ---
-def list_users_by_role(role_name: str, page: int = 1, per_page: int = 10) -> Dict[str, Any]:
+def list_users_by_role(role_name: str, page: int = 1, per_page: int = 10) -> dict[str, Any]:
     """
     分页获取指定角色的用户列表。
 
@@ -190,7 +191,7 @@ def list_users_by_role(role_name: str, page: int = 1, per_page: int = 10) -> Dic
 
 
 # --- 更新用户 (内部辅助函数) ---
-def _update_user_fields(user: User, data: Dict[str, Any], allowed_fields: List[str]) -> bool:
+def _update_user_fields(user: User, data: dict[str, Any], allowed_fields: list[str]) -> bool:
     """
     内部函数，用于更新 User 对象的指定字段。
     不处理权限检查、用户查找和数据库提交。
@@ -284,7 +285,7 @@ def _update_user_fields(user: User, data: Dict[str, Any], allowed_fields: List[s
 
 
 # --- 更新用户 (外部接口) ---
-def update_user_profile(user_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+def update_user_profile(user_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     """
     允许用户更新自己的部分个人资料 (username, email, phone_number, password)。
 
@@ -343,7 +344,7 @@ def update_user_profile(user_id: int, update_data: Dict[str, Any]) -> Dict[str, 
 
 def admin_update_user(operator_id: int,
                       user_id: int,
-                      update_data: Dict[str, Any]) -> Dict[str, Any]:
+                      update_data: dict[str, Any]) -> dict[str, Any]:
     """
     允许管理员更新指定用户的信息。
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/recommend/time_decay.py
 @description  （这里写这个模块/脚本的功能简述）
@@ -6,8 +5,8 @@
 @author       taichilei
 """
 
-import math
 import datetime
+import math
 
 
 class TimeDecayHelper:

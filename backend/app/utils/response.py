@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : response.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -10,22 +9,25 @@
 
 import logging
 from http import HTTPStatus
-from typing import Any, Optional, Dict
+from typing import Any
 
-from flask import jsonify, Response, make_response
-from werkzeug.exceptions import HTTPException  # 导入 HTTPException 用于更通用的 HTTP 异常处理
+from flask import Response, jsonify, make_response
+from werkzeug.exceptions import (
+    HTTPException,  # 导入 HTTPException 用于更通用的 HTTP 异常处理
+)
 
 # 导入错误码枚举
 from .error_codes import ErrorCode
+
 # 导入自定义异常类
 from .exceptions import (
     APIException,
     AuthenticationError,
     AuthorizationError,
-    ValidationError,
-    NotFoundError,
-    DatabaseError,
     BusinessError,
+    DatabaseError,
+    NotFoundError,
+    ValidationError,
 )
 
 # configure logging
@@ -37,8 +39,8 @@ class ApiResponse:
     API 的统一响应格式。
     """
 
-    def __init__(self, status: str, error_code: int, message: str, data: Optional[Any] = None,
-                 error_tag: Optional[str] = None):
+    def __init__(self, status: str, error_code: int, message: str, data: Any | None = None,
+                 error_tag: str | None = None):
         self.status = status
         self.error_code = error_code
         self.message = message
@@ -72,7 +74,7 @@ class ApiResponse:
 
 def success(message: str = "Operation succeeded",
             error_code: int = ErrorCode.SUCCESS.value,  # 默认错误码为 0
-            data: Optional[Any] = None,
+            data: Any | None = None,
             http_status_code: int = HTTPStatus.OK) -> Response:
     """
     成功响应格式封装函数。
@@ -91,8 +93,8 @@ def success(message: str = "Operation succeeded",
 
 def fail(message: str = "操作失败",
          error_code: int = ErrorCode.OPERATION_FAILED.value,  # 默认操作失败码
-         data: Optional[Any] = None,
-         error_tag: Optional[str] = None,
+         data: Any | None = None,
+         error_tag: str | None = None,
          http_status_code: int = HTTPStatus.BAD_REQUEST) -> Response:  # 默认 400
     """
     失败响应格式封装函数。
@@ -117,11 +119,11 @@ def fail(message: str = "操作失败",
 # Common Response Shortcut Functions
 # ======================
 
-def created(data: Optional[Any] = None,
+def created(data: Any | None = None,
             message: str = "资源创建成功",  # 默认消息更新
             error_code: int = ErrorCode.SUCCESS.value,
             http_status_code: int = HTTPStatus.CREATED,
-            headers: Optional[Dict[str, str]] = None) -> Response:
+            headers: dict[str, str] | None = None) -> Response:
     """
     返回 201 Created 响应。
 
@@ -162,8 +164,8 @@ def no_content(message: str = "Operation succeeded，无内容返回",  # 默认
 
 def bad_request(message: str = "错误的请求",  # 默认消息更新
                 error_code: int = ErrorCode.PARAM_INVALID.value,
-                error: Optional[Any] = None,  # 参数名改为 error 以匹配 fail
-                error_tag: Optional[str] = None,
+                error: Any | None = None,  # 参数名改为 error 以匹配 fail
+                error_tag: str | None = None,
                 http_status_code: int = HTTPStatus.BAD_REQUEST) -> Response:
     """
     返回 400 Bad Request 响应。
@@ -182,8 +184,8 @@ def bad_request(message: str = "错误的请求",  # 默认消息更新
 
 def unauthorized(message: str = "未授权或认证失败",  # 默认消息更新
                  error_code: int = ErrorCode.UNAUTHORIZED.value,  # 使用 20003
-                 error: Optional[Any] = None,
-                 error_tag: Optional[str] = None,
+                 error: Any | None = None,
+                 error_tag: str | None = None,
                  http_status_code: int = HTTPStatus.UNAUTHORIZED) -> Response:
     """
     返回 401 Unauthorized 响应 (需要认证)。
@@ -201,8 +203,8 @@ def unauthorized(message: str = "未授权或认证失败",  # 默认消息更�
 
 def forbidden(message: str = "禁止访问",  # 默认消息更新
               error_code: int = ErrorCode.FORBIDDEN.value,  # 使用 20004
-              error: Optional[Any] = None,
-              error_tag: Optional[str] = None,
+              error: Any | None = None,
+              error_tag: str | None = None,
               http_status_code: int = HTTPStatus.FORBIDDEN) -> Response:
     """
      返回 403 Forbidden 响应 (授权失败/权限不足)。
@@ -220,8 +222,8 @@ def forbidden(message: str = "禁止访问",  # 默认消息更新
 
 def not_found(message: str = "资源未找到",
               error_code: int = ErrorCode.HTTP_NOT_FOUND.value,
-              error: Optional[Any] = None,
-              error_tag: Optional[str] = None,
+              error: Any | None = None,
+              error_tag: str | None = None,
               http_status_code: int = HTTPStatus.NOT_FOUND) -> Response:
     """
     返回 404 Not Found 响应。
@@ -239,8 +241,8 @@ def not_found(message: str = "资源未找到",
 
 def method_not_allowed(message: str = "方法不允许",  # 默认消息更新
                        error_code: int = ErrorCode.HTTP_METHOD_NOT_ALLOWED.value,
-                       error: Optional[Any] = None,
-                       error_tag: Optional[str] = None,
+                       error: Any | None = None,
+                       error_tag: str | None = None,
                        http_status_code: int = HTTPStatus.METHOD_NOT_ALLOWED) -> Response:
     """
     返回 405 Method Not Allowed 响应。
@@ -258,8 +260,8 @@ def method_not_allowed(message: str = "方法不允许",  # 默认消息更新
 
 def conflict(message: str = "资源冲突",  # 默认消息更新
              error_code: int = ErrorCode.HTTP_CONFLICT.value,
-             error: Optional[Any] = None,
-             error_tag: Optional[str] = None,
+             error: Any | None = None,
+             error_tag: str | None = None,
              http_status_code: int = HTTPStatus.CONFLICT) -> Response:
     """
     返回 409 Conflict 响应。
@@ -277,8 +279,8 @@ def conflict(message: str = "资源冲突",  # 默认消息更新
 
 def unsupported_media_type(message: str = "不支持的媒体类型",
                            error_code: int = ErrorCode.HTTP_UNSUPPORTED_MEDIA_TYPE.value,
-                           error: Optional[Any] = None,
-                           error_tag: Optional[str] = None,
+                           error: Any | None = None,
+                           error_tag: str | None = None,
                            http_status_code: int = HTTPStatus.UNSUPPORTED_MEDIA_TYPE) -> Response:
     """
     返回 415 Unsupported Media Type 响应。
@@ -296,8 +298,8 @@ def unsupported_media_type(message: str = "不支持的媒体类型",
 
 def too_many_requests(message: str = "请求过多",  # 默认消息更新
                       error_code: int = ErrorCode.HTTP_TOO_MANY_REQUESTS.value,
-                      error: Optional[Any] = None,
-                      error_tag: Optional[str] = None,
+                      error: Any | None = None,
+                      error_tag: str | None = None,
                       http_status_code: int = HTTPStatus.TOO_MANY_REQUESTS) -> Response:
     """
     返回 429 Too Many Requests 响应。
@@ -315,8 +317,8 @@ def too_many_requests(message: str = "请求过多",  # 默认消息更新
 
 def server_error(message: str = "服务器内部错误",  # 默认消息更新
                  error_code: int = ErrorCode.INTERNAL_SERVER_ERROR.value,
-                 error: Optional[Any] = None,
-                 error_tag: Optional[str] = None,
+                 error: Any | None = None,
+                 error_tag: str | None = None,
                  http_status_code: int = HTTPStatus.INTERNAL_SERVER_ERROR) -> Response:
     """
      返回 500 Internal Server Error 响应。

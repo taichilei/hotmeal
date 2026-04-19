@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : enums.py
 @Author     : ChiLei Tai JOU

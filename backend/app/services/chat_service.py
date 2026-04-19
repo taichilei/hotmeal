@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : chat_service.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -11,29 +10,34 @@
 import logging
 import time
 from http import HTTPStatus
-from typing import List, Dict, Any, Optional
+from typing import Any
 
 import openai
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import joinedload
 
-from app.utils.db import db
 from app.models.chat import Chat
-from app.models.user import User
 from app.models.enums import ChatStatus, MessageType
+from app.models.user import User
+from app.utils.db import db
 from app.utils.deepseek_client import get_deepseek_client
-# 导入需要的异常类型
-from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError
-)
+
 # 导入需要的错误码枚举
 from app.utils.error_codes import ErrorCode
+
+# 导入需要的异常类型
+from app.utils.exceptions import (
+    APIException,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
+)
 
 logger = logging.getLogger(__name__)
 
 
 # --- 辅助函数 ---
-def _serialize_chat(chat: Chat) -> Dict[str, Any]:
+def _serialize_chat(chat: Chat) -> dict[str, Any]:
     """内部辅助函数，用于序列化 Chat 对象。"""
     if not isinstance(chat, Chat):
         logger.error(f"尝试序列化非 Chat 对象: {type(chat)}")
@@ -104,7 +108,7 @@ def generate_ai_response(user_message: str) -> str:
 
 def _process_ai_answer_internal(chat_entry: Chat):
     """处理 AI 回答的内部逻辑 (不进行 commit)。修改传入的 chat_entry 对象。"""
-    from app.utils.context_provider import load_user_context, load_admin_context
+    from app.utils.context_provider import load_admin_context, load_user_context
     if not isinstance(chat_entry, Chat):
         # 这个应该是非常内部的错误
         raise APIException("_process_ai_answer_internal 收到无效参数")
@@ -144,9 +148,9 @@ def _process_ai_answer_internal(chat_entry: Chat):
 # --- 创建聊天 ---
 def create_chat_message(user_id: int, question: str,
                         message_type: MessageType = MessageType.TEXT,
-                        image_url: Optional[str] = None,
-                        tags: Optional[str] = None,
-                        process_sync: bool = True) -> Dict[str, Any]:
+                        image_url: str | None = None,
+                        tags: str | None = None,
+                        process_sync: bool = True) -> dict[str, Any]:
     """创建新的聊天记录。可以选择是否同步处理 AI 回复。"""
     # 1. 验证 User ID
     if not db.session.query(User.query.filter_by(user_id=user_id).exists()).scalar():
@@ -203,7 +207,7 @@ def create_chat_message(user_id: int, question: str,
 
 
 # --- 处理待处理聊天 ---
-def process_single_pending_chat(chat_id: int) -> Dict[str, Any]:
+def process_single_pending_chat(chat_id: int) -> dict[str, Any]:
     """处理单个指定 ID 的聊天记录的 AI 回复。"""
     logger.info(f"尝试处理聊天记录 {chat_id} 的 AI 回复...")
     chat_entry = Chat.query.get(chat_id)
@@ -268,7 +272,7 @@ def process_single_pending_chat(chat_id: int) -> Dict[str, Any]:
 # 这些函数看起来是独立的查询逻辑，如果它们只被路由层使用，放在这里是合适的。
 # 如果有更复杂的查询或需要被其他服务复用，可以考虑放到专门的查询模块或仓库层。
 
-def get_chat_by_id(chat_id: int) -> Dict[str, Any]:
+def get_chat_by_id(chat_id: int) -> dict[str, Any]:
     """根据 ID 获取聊天记录详情。"""
     # 预加载用户信息可以提高序列化效率
     chat = Chat.query.options(joinedload(Chat.user)).get(chat_id)
@@ -278,7 +282,7 @@ def get_chat_by_id(chat_id: int) -> Dict[str, Any]:
     return _serialize_chat(chat)
 
 
-def get_chat_history_for_user(user_id: int, page: int = 1, per_page: int = 20) -> Dict[str, Any]:
+def get_chat_history_for_user(user_id: int, page: int = 1, per_page: int = 20) -> dict[str, Any]:
     """获取指定用户的聊天记录分页列表。"""
     if not db.session.query(User.query.filter_by(user_id=user_id).exists()).scalar():
         raise NotFoundError(f"用户 ID {user_id} 不存在。", error_code=ErrorCode.USER_NOT_FOUND.value)
@@ -305,7 +309,7 @@ def get_chat_history_for_user(user_id: int, page: int = 1, per_page: int = 20) -
                            error_code=ErrorCode.DATABASE_ERROR.value) from db_hist_err
 
 
-def get_pending_or_processing_chats(limit: int = 100) -> List[Dict[str, Any]]:
+def get_pending_or_processing_chats(limit: int = 100) -> list[dict[str, Any]]:
     """获取处于 PENDING 或 PROCESSING 状态的聊天记录列表。"""
     try:
         chats = Chat.query.filter(

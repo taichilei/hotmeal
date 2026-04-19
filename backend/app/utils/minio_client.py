@@ -6,12 +6,12 @@ Organization:     taichilei
 Date Created:     2025-04-18
 Description:      <文件描述信息>
 """
+import os
 import uuid
+
+from dotenv import load_dotenv
 from minio import Minio
 from werkzeug.utils import secure_filename
-from flask import current_app
-import os
-from dotenv import load_dotenv
 
 load_dotenv()
 

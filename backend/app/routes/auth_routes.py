@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 File Name:     auth_routes.py
 Project:       backend
@@ -11,8 +10,10 @@ import logging
 from http import HTTPStatus
 
 from flask import request
+
 # --- Auth Routes ---
-from flask_restx import Namespace as NewNamespace, Resource, fields
+from flask_restx import Namespace as NewNamespace
+from flask_restx import Resource, fields
 
 from app.services.auth_service import AuthService
 from app.utils.decorators import log_request, timing

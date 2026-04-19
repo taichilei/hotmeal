@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 File Name:     /app/models/dining_area.py
 Project:       hotmeal
@@ -9,18 +8,19 @@ Description:   DiningArea model.
 
 import logging
 from datetime import datetime, timezone
-from typing import Optional, TYPE_CHECKING, Dict, Any, List
+from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import ForeignKey, String, Integer, DateTime, Enum as DBEnum, func
-from sqlalchemy.orm import relationship, validates, Mapped, mapped_column
+from sqlalchemy import DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import Enum as DBEnum
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
-from app.utils.db import db
 from app.models.enums import AreaType, DiningAreaState
+from app.utils.db import db
 
 # 处理循环类型提示
 if TYPE_CHECKING:
-    from .user import User
     from .order import Order
+    from .user import User
 
 logger = logging.getLogger(__name__)
 
@@ -44,12 +44,12 @@ class DiningArea(db.Model):
     state: Mapped[DiningAreaState] = mapped_column(
         DBEnum(DiningAreaState, name="dining_area_state_enum"), nullable=False,
         default=DiningAreaState.FREE, comment="区域状态：FREE空闲/OCCUPIED占用")
-    max_capacity: Mapped[Optional[int]] = mapped_column(Integer, nullable=True,
+    max_capacity: Mapped[int | None] = mapped_column(Integer, nullable=True,
                                                         comment="区域最大容纳人数")
     usage_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0,
                                              comment="区域使用次数")
     # 外键关联到 User 模型
-    assigned_user_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('user.user_id',
+    assigned_user_id: Mapped[int | None] = mapped_column(Integer, ForeignKey('user.user_id',
                                                                                 name='fk_dining_area_user_id'),
                                                             nullable=True, comment="当前占用用户ID")
     area_type: Mapped[AreaType] = mapped_column(DBEnum(AreaType, name="area_type_enum"),
@@ -58,7 +58,7 @@ class DiningArea(db.Model):
     # 使用带时区的 DateTime 和 server_default
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), comment="创建时间")
-    last_used: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True,
+    last_used: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True,
                                                           comment="上一次使用时间")
     # updated_at 通常也需要
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
@@ -70,7 +70,7 @@ class DiningArea(db.Model):
     assigned_user: Mapped[Optional["User"]] = relationship(foreign_keys=[assigned_user_id],
                                                            backref="assigned_areas")  # 使用 assigned_user 区分 User 的其他关系
     # 该区域发生过的所有订单 (一对多关系)
-    orders: Mapped[List["Order"]] = relationship(back_populates="dining_area",
+    orders: Mapped[list["Order"]] = relationship(back_populates="dining_area",
                                                  lazy="dynamic")
 
     # --- 使用 @validates 进行属性验证 ---
@@ -101,7 +101,7 @@ class DiningArea(db.Model):
     # assigned_user_id 的验证（用户是否存在）应在服务层进行
 
     # --- 实例方法 ---
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """将用餐区域对象转换为字典。"""
         return {
             "area_id": self.area_id,

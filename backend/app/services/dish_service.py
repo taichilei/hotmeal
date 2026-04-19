@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : dish_service.py
 @Date       : 2025-03-01 (Refactored & Adapted: 2025-03-01)
@@ -11,7 +10,7 @@
 
 import logging
 from decimal import Decimal
-from typing import Optional, List, Dict, Any
+from typing import Any
 
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -19,17 +18,22 @@ from app.models.category import Category
 from app.models.dish import Dish  # 导入重构后的 Dish 模型
 from app.models.tag import Tag
 from app.utils.db import db
+
 # 导入需要的错误码枚举
 from app.utils.error_codes import ErrorCode
+
 # 导入需要的异常类型
 from app.utils.exceptions import (
-    APIException, BusinessError, NotFoundError, ValidationError
+    APIException,
+    BusinessError,
+    NotFoundError,
+    ValidationError,
 )
 
 logger = logging.getLogger(__name__)
 
 
-def serialize_dish(dish: Dish) -> Dict[str, Any]:
+def serialize_dish(dish: Dish) -> dict[str, Any]:
     """
     序列化菜品 ORM 对象为字典 (使用模型的 to_dict 方法)。
     """
@@ -43,11 +47,11 @@ def serialize_dish(dish: Dish) -> Dict[str, Any]:
 
 # --- 创建菜品 ---
 def create_dish(name: str, price: Decimal | float | str, stock: int,
-                category_id: int, image_url: Optional[str] = None,
-                sales: int = 0, rating: Optional[float | str] = None,
-                description: Optional[str] = None,
+                category_id: int, image_url: str | None = None,
+                sales: int = 0, rating: float | str | None = None,
+                description: str | None = None,
                 is_available: bool = True,
-                tag_names: Optional[List[str]] = None) -> Dict[str, Any]:
+                tag_names: list[str] | None = None) -> dict[str, Any]:
     """
     创建新菜品。
     """
@@ -116,7 +120,7 @@ def create_dish(name: str, price: Decimal | float | str, stock: int,
 
 
 # --- 查询菜品 ---
-def get_dish_by_id(dish_id: int) -> Dict[str, Any]:
+def get_dish_by_id(dish_id: int) -> dict[str, Any]:
     """
     根据 ID 获取单个菜品。
     """
@@ -130,7 +134,7 @@ def get_dish_by_id(dish_id: int) -> Dict[str, Any]:
     return serialize_dish(dish)  # 使用序列化函数
 
 
-def get_available_dishes(category_id: Optional[int] = None) -> List[Dict[str, Any]]:
+def get_available_dishes(category_id: int | None = None) -> list[dict[str, Any]]:
     """
     获取所有可用的菜品（is_available = True），可选按分类过滤。
     """
@@ -154,7 +158,7 @@ def get_available_dishes(category_id: Optional[int] = None) -> List[Dict[str, An
 
 
 # --- 更新菜品 ---
-def update_dish(dish_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+def update_dish(dish_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     """
     更新现有菜品的信息。
     """

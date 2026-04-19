@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : user_routes.py
 @Date       : 2025-03-01
@@ -21,7 +20,7 @@ from app.models.enums import UserRole
 from app.services import user_service
 from app.services.user_service import update_user_avatar
 from app.utils.decorators import log_request, timing
-from app.utils.response import created, success, bad_request, unauthorized
+from app.utils.response import bad_request, created, success, unauthorized
 
 logger = logging.getLogger(__name__)
 

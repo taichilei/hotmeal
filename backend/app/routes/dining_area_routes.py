@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : dining_area_routes.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -16,11 +15,12 @@ from flask_jwt_extended import jwt_required
 from flask_restx import Namespace, Resource, fields
 
 # 导入模型和服务
-from app.models.enums import DiningAreaState, AreaType
+from app.models.enums import AreaType, DiningAreaState
 from app.services import dining_area_service
+
 # 导入装饰器和响应工具
-from app.utils.decorators import require_roles, log_request, timing
-from app.utils.response import success, created, no_content, bad_request
+from app.utils.decorators import log_request, require_roles, timing
+from app.utils.response import bad_request, created, no_content, success
 
 # 导入错误码和异常 (供参考)
 

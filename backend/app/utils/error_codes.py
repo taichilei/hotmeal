@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : error_codes.py
 # ... (其他注释保持不变) ...

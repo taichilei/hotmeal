@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : db.py
 @Date       : 2025-03-01 和版本

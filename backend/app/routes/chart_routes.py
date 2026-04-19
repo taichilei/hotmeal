@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """
 @File       : chart_routes.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Desc       : 提供图表和统计数据的相关 API 端点。
 
 
@@ -17,9 +16,10 @@ from flask_restx import Namespace, Resource, fields
 
 # --- 导入服务层 ---
 from app.services import chart_service
+
 # --- 导入装饰器和响应工具 ---
 from app.utils.decorators import log_request, timing  # 移除 require_roles (如果不需要)
-from app.utils.response import success, bad_request
+from app.utils.response import bad_request, success
 
 # --- 导入模型枚举（如果需要权限检查）---
 # from app.models.enums import UserRole

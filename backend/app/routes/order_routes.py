@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : order_routes.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -11,20 +10,29 @@ import logging
 from http import HTTPStatus
 
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt  # 导入 get_jwt
+from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required  # 导入 get_jwt
 from flask_restx import Namespace, Resource, fields
 
 # 导入模型枚举，用于权限检查
 from app.models.enums import UserRole
+
 # 导入重构后的服务层模块
 from app.services import order_service
+
 # 导入装饰器和响应工具
-from app.utils.decorators import require_roles, log_request, timing
+from app.utils.decorators import log_request, require_roles, timing
+
 # 导入错误码和异常 (供参考)
 from app.utils.error_codes import ErrorCode
-from app.utils.exceptions import ValidationError, AuthorizationError
-from app.utils.response import success, created, no_content, bad_request, unauthorized, \
-    server_error  # 导入需要的响应函数
+from app.utils.exceptions import AuthorizationError, ValidationError
+from app.utils.response import (
+    bad_request,
+    created,
+    no_content,
+    server_error,  # 导入需要的响应函数
+    success,
+    unauthorized,
+)
 
 logger = logging.getLogger(__name__)
 

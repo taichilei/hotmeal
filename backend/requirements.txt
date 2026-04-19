@@ -28,6 +28,7 @@ SQLAlchemy==2.0.39
 # Testing & Code Quality
 # ==========================
 pytest==8.3.5
+ruff==0.5.5
 
 # ==========================
 # Utilities & Environment
@@ -61,3 +62,4 @@ Werkzeug~=3.1.3
 # Miscellaneous Dependencies
 # ==========================
 Flask-Migrate~=4.1.0
+redis~=5.0.1

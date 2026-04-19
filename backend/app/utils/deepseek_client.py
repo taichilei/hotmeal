@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : deepseek_client.py
 @Date       : 2025-03-01
@@ -8,10 +7,10 @@
 """
 
 import logging
-from typing import Optional
 
 # 导入 Flask 当前应用上下文，以便访问配置
-from flask import current_app, Flask
+from flask import Flask, current_app
+
 # 导入 openai 库，现在使用其类
 from openai import OpenAI  # 显式导入 OpenAI 类
 
@@ -31,7 +30,7 @@ logger = logging.getLogger(__name__)
 _deepseek_client_instance = None
 
 
-def get_deepseek_client(app: Optional[Flask] = None) -> OpenAI:
+def get_deepseek_client(app: Flask | None = None) -> OpenAI:
     """
     获取或创建一个配置好的用于 DeepSeek API 的 OpenAI 客户端实例。
 

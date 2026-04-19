@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """
 @File       : recommend_service.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Description: 推荐服务，管理和路由不同的推荐策略。
               适配重构后的推荐器。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
@@ -10,10 +9,10 @@
 
 import logging
 
-from app.recommend.popular import PopularRecommender
-from app.recommend.item_cf import ItemCFRecommender
-from app.recommend.profile_based import ProfileRecommender
 from app.config import Config
+from app.recommend.item_cf import ItemCFRecommender
+from app.recommend.popular import PopularRecommender
+from app.recommend.profile_based import ProfileRecommender
 
 logger = logging.getLogger(__name__)
 

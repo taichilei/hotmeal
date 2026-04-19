@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : time_utils.py
 @Date       : 2025-03-01
@@ -8,7 +7,6 @@
 """
 
 from datetime import datetime, timedelta
-from typing import Optional
 from zoneinfo import ZoneInfo
 
 
@@ -74,7 +72,7 @@ def log_friendly_time(dt: datetime, timezone: str = "Asia/Shanghai") -> str:
     return local_dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def parse_iso_datetime(dt_str: str) -> Optional[datetime]:
+def parse_iso_datetime(dt_str: str) -> datetime | None:
     """
     将 ISO 格式字符串转换为带时区的 datetime 对象（默认为 UTC）
     如果格式非法，返回 None

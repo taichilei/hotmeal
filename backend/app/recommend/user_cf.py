@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/recommend/user_cf.py
 @description  user-based collaborative filtering algorithm

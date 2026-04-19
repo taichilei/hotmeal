@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : recommend_routes.py
 @Date       : 2025-03-01
@@ -9,12 +8,10 @@ import logging
 from http import HTTPStatus
 
 from flask import request
-
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restx import Namespace, Resource, fields
 
 from app.services.recommend_service import RecommendationService
-
 from app.utils.decorators import log_request, timing
 from app.utils.response import success, unauthorized
 

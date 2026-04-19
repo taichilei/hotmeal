@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 File Name:     /app/models/category.py
 Project:       hotmeal
@@ -10,11 +9,19 @@ Description:   category model
 import logging
 import re
 from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+from typing import Any, Optional
 
 # 导入 SQLAlchemy 相关
-from sqlalchemy import ForeignKey, String, Integer, Text, DateTime, Index, func  # 添加 Text, Boolean
-from sqlalchemy.orm import validates, relationship, backref, Mapped, mapped_column
+from sqlalchemy import (  # 添加 Text, Boolean
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    func,
+)
+from sqlalchemy.orm import Mapped, backref, mapped_column, relationship, validates
 
 from app.utils.db import db
 
@@ -36,12 +43,12 @@ class Category(db.Model):
     category_id: Mapped[int] = mapped_column(Integer, primary_key=True, comment="分类主键 ID")
     name: Mapped[str] = mapped_column(String(50), nullable=False, unique=True, comment='分类名称')
     # --- 统一属性名和列名为 description ---
-    description: Mapped[Optional[str]] = mapped_column(Text, nullable=True, comment='分类描述')
+    description: Mapped[str | None] = mapped_column(Text, nullable=True, comment='分类描述')
     # --- 统一属性名和列名为 img_url ---
-    img_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    img_url: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                    comment='分类图片 URL')
     # --- 时间戳字段 ---
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True,
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True,
                                                            comment="删除时间（软删除）")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), comment="创建时间")
@@ -49,7 +56,7 @@ class Category(db.Model):
                                                  server_default=func.now(), onupdate=func.now(),
                                                  comment="最后更新时间")
     # --- 父分类外键 ---
-    parent_category_id: Mapped[Optional[int]] = mapped_column(
+    parent_category_id: Mapped[int | None] = mapped_column(
         Integer,
         ForeignKey('category.category_id', name='fk_category_parent_id'),
         nullable=True,
@@ -98,7 +105,7 @@ class Category(db.Model):
     def __repr__(self):
         return f"<Category(id={self.category_id}, name='{self.name}')>"
 
-    def to_dict(self, include_subcategories_count: bool = False) -> Dict[str, Any]:
+    def to_dict(self, include_subcategories_count: bool = False) -> dict[str, Any]:
         """将分类实例转换为字典。"""
         data = {
             "category_id": self.category_id,

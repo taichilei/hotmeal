@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 @File       : __init__.py
 @Author     : ChiLei Tai JOU
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Description: Flask 应用的初始化文件（应用工厂）。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
 
@@ -15,10 +14,10 @@ from typing import Optional
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
-
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_restx import Api
+
 from app.config import config
 from app.utils.db import db
 from app.utils.json_encoder import CustomJSONProvider
@@ -58,17 +57,17 @@ def register_namespaces(api_instance: Api):  # 接收 Api 实例作为参数
     """注册所有 API 命名空间。"""
     # 导入 Namespaces
     from app.routes.admin_routes import admin_ns
+    from app.routes.auth_routes import auth_ns
     from app.routes.category_routes import category_ns
     from app.routes.chat_routes import chat_ns
+    from app.routes.dining_area_routes import area_ns
     from app.routes.dish_routes import dish_ns
     from app.routes.health import api as health_ns
     from app.routes.order_routes import order_ns
     from app.routes.recommend_routes import recommend_ns
-    from app.routes.dining_area_routes import area_ns
-    from app.routes.user_routes import user_ns
-    from app.routes.auth_routes import auth_ns
     from app.routes.staff_routes import staff_ns
     from app.routes.tag_routes import tag_ns
+    from app.routes.user_routes import user_ns
 
     # 添加 Namespace 到 Api 实例
     api_instance.add_namespace(health_ns, path='/health')
@@ -86,7 +85,7 @@ def register_namespaces(api_instance: Api):  # 接收 Api 实例作为参数
     logger.info("所有 API 命名空间注册完成。")
 
 
-def create_app(config_name: Optional[str] = None) -> Flask:
+def create_app(config_name: str | None = None) -> Flask:
     """
     应用工厂函数。
 

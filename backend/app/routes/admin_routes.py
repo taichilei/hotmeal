@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : admin_routes.py
 @Date       : 2025-03-01 和版本
@@ -12,16 +11,17 @@ import logging
 from http import HTTPStatus
 
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity  # 导入 jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required  # 导入 jwt_required
 from flask_restx import Namespace, Resource, fields
 
 from app.models.enums import UserRole, UserStatus  # 导入 UserRole 枚举
 from app.routes.user_routes import user_model
 from app.services import user_service
 from app.services.user_service import get_all_users
+
 # --- 修正导入路径 ---
-from app.utils.decorators import require_roles, log_request, timing  # 导入需要的装饰器
-from app.utils.response import success, bad_request, unauthorized, no_content
+from app.utils.decorators import log_request, require_roles, timing  # 导入需要的装饰器
+from app.utils.response import bad_request, no_content, success, unauthorized
 
 logger = logging.getLogger(__name__)  # 添加 logger
 

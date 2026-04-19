@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @file         app/models/order.py
 @description  （这里写这个模块/脚本的功能简述）
@@ -10,19 +9,20 @@ import logging
 import re
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
-from typing import List, TYPE_CHECKING, Optional, Dict, Any
+from typing import TYPE_CHECKING, Any, Optional
 
-from sqlalchemy import func, ForeignKey, String, Integer, DateTime, Numeric, Enum as DBEnum
-from sqlalchemy.orm import relationship, validates, Mapped, mapped_column
+from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, String, func
+from sqlalchemy import Enum as DBEnum
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.models.enums import OrderState, PaymentMethod
 from app.utils.db import db
 
 # 处理 OrderItem 的循环类型提示
 if TYPE_CHECKING:
+    from .dining_area import DiningArea
     from .order_item import OrderItem
     from .user import User
-    from .dining_area import DiningArea
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class Order(db.Model):
     user_id: Mapped[int] = mapped_column(Integer,
                                          ForeignKey('user.user_id', name='fk_order_user_id'),
                                          nullable=False, comment="下单用户ID")
-    area_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('dining_area.area_id',
+    area_id: Mapped[int | None] = mapped_column(Integer, ForeignKey('dining_area.area_id',
                                                                        name='fk_order_area_id'),
                                                    nullable=True, comment="关联用餐区域ID（可选）")
     state: Mapped[OrderState] = mapped_column(DBEnum(OrderState, name="order_state_enum"),
@@ -50,23 +50,23 @@ class Order(db.Model):
     # --- 使用 Numeric 存储价格 ---
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=Decimal("0.00"),
                                            comment="订单总金额")
-    payment_method: Mapped[Optional[PaymentMethod]] = mapped_column(
+    payment_method: Mapped[PaymentMethod | None] = mapped_column(
         DBEnum(PaymentMethod, name="payment_method_enum"), nullable=True, comment="支付方式")
-    image_url: Mapped[Optional[str]] = mapped_column(String(255), nullable=True,
+    image_url: Mapped[str | None] = mapped_column(String(255), nullable=True,
                                                      comment="支付凭证图片URL")  # 调整长度
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), comment="订单创建时间")
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False,
                                                  server_default=func.now(), onupdate=func.now(),
                                                  comment="订单更新时间")
-    deleted_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True,
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True,
                                                            comment="删除时间（软删除）")
 
     # --- 关系定义 ---
     user: Mapped["User"] = relationship(back_populates="orders")  # 使用 Mapped 和字符串类型提示
     dining_area: Mapped[Optional["DiningArea"]] = relationship(back_populates="orders")
     # `cascade="all, delete-orphan"` 表示删除 Order 时，其关联的 OrderItem 也会被删除
-    order_items: Mapped[List["OrderItem"]] = relationship(back_populates="order",
+    order_items: Mapped[list["OrderItem"]] = relationship(back_populates="order",
                                                           cascade="all, delete-orphan",
                                                           lazy="selectin")  # lazy='selectin' 可以在加载 Order 时高效加载 Items
 
@@ -99,7 +99,7 @@ class Order(db.Model):
         return url
 
     # --- 实例方法 ---
-    def to_dict(self, include_items=True) -> Dict[str, Any]:
+    def to_dict(self, include_items=True) -> dict[str, Any]:
         """将订单对象转换为字典。"""
         data = {
             "order_id": self.order_id,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : category_routes.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -14,9 +13,19 @@ from flask_restx import Namespace, Resource, fields
 
 # 导入重构后的服务层模块
 from app.services import category_service
+
 # 导入装饰器和响应工具
-from app.utils.decorators import require_roles, log_request, timing  # 移除 validate_json
-from app.utils.response import success, created, no_content, bad_request  # 导入需要的响应函数
+from app.utils.decorators import (  # 移除 validate_json
+    log_request,
+    require_roles,
+    timing,
+)
+from app.utils.response import (  # 导入需要的响应函数
+    bad_request,
+    created,
+    no_content,
+    success,
+)
 
 logger = logging.getLogger(__name__)
 

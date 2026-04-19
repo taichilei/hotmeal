@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : chat_routes.py
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
@@ -9,19 +8,29 @@ from http import HTTPStatus
 from typing import cast  # <--- 导入 cast
 
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt  # 导入所需函数
+from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required  # 导入所需函数
 from flask_restx import Namespace, Resource, fields
 
 # 导入模型和服务
 from app.models.enums import MessageType, UserRole  # 导入需要的枚举
 from app.services import chat_service  # 导入重构后的服务
+
 # 导入装饰器和响应工具
-from app.utils.decorators import require_roles, log_request, \
-    timing  # 移除 validate_json, login_required
+from app.utils.decorators import (
+    log_request,
+    require_roles,
+    timing,  # 移除 validate_json, login_required
+)
+
 # 导入错误码和异常 (供参考)
 from app.utils.error_codes import ErrorCode
-from app.utils.exceptions import ValidationError, AuthorizationError
-from app.utils.response import success, created, bad_request, unauthorized  # 导入响应函数
+from app.utils.exceptions import AuthorizationError, ValidationError
+from app.utils.response import (  # 导入响应函数
+    bad_request,
+    created,
+    success,
+    unauthorized,
+)
 
 logger = logging.getLogger(__name__)
 

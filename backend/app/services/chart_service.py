@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 @File       : chart_service.py
 @Date       : 2025-03-01 # 替换为当前日期
@@ -8,25 +7,27 @@
 """
 
 import logging
-from typing import List, Dict, Any
+from typing import Any
 
-from sqlalchemy import func, desc, select
+from sqlalchemy import desc, func, select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.models.dish import Dish
 from app.models.enums import OrderState
 from app.models.order import Order
 from app.models.order_item import OrderItem
+
 # 导入数据库实例和模型
 from app.utils.db import db
 from app.utils.error_codes import ErrorCode
+
 # 导入异常和错误码
 from app.utils.exceptions import APIException
 
 logger = logging.getLogger(__name__)
 
 
-def get_sales_ranking(limit: int = 10) -> List[Dict[str, Any]]:
+def get_sales_ranking(limit: int = 10) -> list[dict[str, Any]]:
     """
     获取菜品销量排行榜。
     根据菜品在已支付或已完成订单中的总销售数量进行排名。
