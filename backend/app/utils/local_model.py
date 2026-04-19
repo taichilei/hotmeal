@@ -1,3 +1,9 @@
+"""
+@File       : local_model.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-03-01
+@Description: 本地 Llama 大语言模型加载和调用封装，单例模式缓存模型实例
+"""
 import logging
 import os
 

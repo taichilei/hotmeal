@@ -1,9 +1,8 @@
 """
-File Name:     /app/models/dish.py
-Project:       hotmeal
-Author:        taichilei
-Created:       2025-04-23
-Description:   dish model
+@File       : dish.py
+@Author     : taichilei
+@Date       : 2025-04-23
+@Description: 菜品数据模型
 """
 
 import logging

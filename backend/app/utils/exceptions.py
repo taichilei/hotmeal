@@ -1,9 +1,9 @@
 """
 @File       : exceptions.py
-@Date       : 2025-03-01 (或当前日期)
-@Description: Defines custom exception classes for the HotMeal API.
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-@Version    : 1.0.
+@Author     : ChiLei Tai JOU
+@Date       : 2025-03-01
+@Description: 为 HotMeal API 定义自定义异常基类和各种具体异常类型
+@Version    : 1.0.0
 @Copyright  : Copyright © 2025. All rights reserved.
 """
 

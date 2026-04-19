@@ -1,8 +1,8 @@
 """
-@file         app/routes/staff_routes.py
-@description  （这里写这个模块/脚本的功能简述）
-@date         2025-05-05
-@author       taichilei
+@File       : staff_routes.py
+@Author     : taichilei
+@Date       : 2025-05-05
+@Description: 员工管理相关 API 端点
 """
 
 import logging

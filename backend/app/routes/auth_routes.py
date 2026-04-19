@@ -1,9 +1,8 @@
 """
-File Name:     auth_routes.py
-Project:       backend
-Author:        taichilei
-Created:       2025-04-26
-Description:   <模块功能简述>
+@File       : auth_routes.py
+@Author     : taichilei
+@Date       : 2025-04-26
+@Description: 用户认证相关 API 端点
 """
 
 import logging

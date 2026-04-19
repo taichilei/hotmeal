@@ -1,9 +1,8 @@
 """
-File Name:     /app/models/category.py
-Project:       hotmeal
-Author:        taichilei
-Created:       2025-04-23
-Description:   category model
+@文件        : category.py
+@作者         : taichilei
+@日期         : 2025-04-23
+@描述         : 分类数据模型
 """
 
 import logging

@@ -1,9 +1,8 @@
 """
 @File       : decorators.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : General purpose decorators for Flask route handlers.
-
-
+@Description: 为 Flask 路由处理器提供通用装饰器，包括日志记录、耗时统计、角色权限检查
 """
 
 import functools

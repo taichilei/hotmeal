@@ -1,10 +1,9 @@
 """
 @File       : dish_service.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored & Adapted: 2025-03-01)
-@Desc       : 菜品服务模块，适配重构后的 Dish 模型。
-              采用 "失败抛异常，成功返数据"模式。
-
-@Version    : 1.2.1 # 版本更新
+@Description: 菜品服务模块，适配重构后的 Dish 模型，采用 "失败抛异常，成功返数据"模式
+@Version    : 1.2.1
 @Copyright  : Copyright © 2025. All rights reserved.
 """
 

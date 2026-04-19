@@ -1,8 +1,6 @@
 """
 @File       : __init__.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Description: Initialization file for the recommendation package.
-@Project    : Personalized Meal Ordering System Based on Recommendation Algorithms
+@Description: 推荐算法包初始化文件
 """
-
-

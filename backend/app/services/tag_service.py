@@ -1,8 +1,8 @@
 """
-@file         app/services/tag_service.py
-@description  This is the implementation of tag_service.
-@date         2025-05-28
-@author       taichilei
+@File       : tag_service.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-05-28
+@Description: 标签服务层，处理标签的创建、查询、更新和删除
 """
 
 from app.models import db

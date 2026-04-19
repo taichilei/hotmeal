@@ -1,8 +1,8 @@
 """
-@file         app/services/order_service.py
-@description  order service
-@date         2025-05-05
-@author       taichilei
+@File       : order_service.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-05-05
+@Description: 订单服务层，处理订单的创建、查询、更新、取消和删除逻辑，采用 "失败抛异常，成功返数据"模式
 """
 
 import logging

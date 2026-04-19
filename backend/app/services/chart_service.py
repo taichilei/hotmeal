@@ -1,9 +1,8 @@
 """
 @File       : chart_service.py
-@Date       : 2025-03-01 # 替换为当前日期
-@Desc       : 图表和统计数据相关的服务层逻辑。
-
-
+@Author     : ChiLei Tai JOU
+@Date       : 2025-03-01
+@Description: 图表和统计数据相关的服务层逻辑
 """
 
 import logging

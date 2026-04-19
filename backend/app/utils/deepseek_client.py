@@ -1,9 +1,8 @@
 """
 @File       : deepseek_client.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Description: Provides a configured OpenAI client instance for interacting with the DeepSeek API.
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
+@Description: 提供配置好的 OpenAI 客户端实例，用于与 DeepSeek API 交互
 """
 
 import logging

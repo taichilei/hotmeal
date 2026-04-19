@@ -1,9 +1,8 @@
 """
 @File       : time_utils.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       :
-
-
+@Description: 时间处理工具集合，提供时区转换、序列化、格式化和相对时间计算
 """
 
 from datetime import datetime, timedelta

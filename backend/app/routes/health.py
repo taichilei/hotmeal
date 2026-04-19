@@ -1,7 +1,8 @@
 """
 @File       : health.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : Health check related APIs
+@Description: 健康检查相关 API
 """
 
 from flask_restx import Namespace, Resource

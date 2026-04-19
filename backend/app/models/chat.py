@@ -1,9 +1,8 @@
 """
-File Name:     /app/models/chat.py
-Project:       hotmeal
-Author:        taichilei
-Created:       2025-04-23
-Description:   chat model
+@File       : chat.py
+@Author     : taichilei
+@Date       : 2025-04-23
+@Description: 聊天记录数据模型
 """
 
 import logging

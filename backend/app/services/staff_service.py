@@ -1,8 +1,8 @@
 """
-@file         app/services/staff_service.py
-@description  staff user service
-@date         2025-05-05
-@author       taichilei
+@File       : staff_service.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-05-05
+@Description: 员工用户服务，处理员工用户的创建、查询、更新和删除
 """
 
 import logging

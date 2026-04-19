@@ -1,9 +1,9 @@
 """
 @File       : response.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
-@Description: Defines unified API response structure, helper functions, and global error handlers.
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-@Version    : 1.1. # 版本更新
+@Description: 定义统一的 API 响应结构、辅助函数和全局异常处理器
+@Version    : 1.1.0
 @Copyright  : Copyright © 2025. All rights reserved.
 """
 

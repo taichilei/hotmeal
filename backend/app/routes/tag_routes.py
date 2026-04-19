@@ -1,8 +1,8 @@
 """
-@file         app/routes/tag_routes.py
-@description  This file provides the API routes for tag management.
-@date         2025-05-28
-@author       taichilei
+@File       : tag_routes.py
+@Author     : taichilei
+@Date       : 2025-05-28
+@Description: 提供标签管理的 API 路由
 """
 
 from flask import request

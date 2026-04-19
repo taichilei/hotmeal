@@ -4,7 +4,6 @@
 @Date       : 2025-03-01
 @Description: Flask 应用的初始化文件（应用工厂）。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
 """
 
 import logging
@@ -18,7 +17,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_restx import Api
 
-from app.config import config
+from app.config import config, validate_config
 from app.utils.db import db
 from app.utils.json_encoder import CustomJSONProvider
 from app.utils.response import register_error_handlers
@@ -96,6 +95,9 @@ def create_app(config_name: str | None = None) -> Flask:
     Returns:
         配置好的 Flask 应用实例。
     """
+    # 首先验证必需的环境变量
+    validate_config()
+
     # 如果未指定 config_name，尝试从环境变量获取，否则使用 default
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'default')

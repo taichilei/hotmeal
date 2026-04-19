@@ -1,8 +1,8 @@
 """
 @File       : redis_client.py
+@Author     : ChiLei Tai JOU
 @Date       : 2026-04-19
-@Description: Redis 客户端封装，用于缓存推荐算法数据
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
+@Description: Redis 客户端封装，单例模式获取连接，提供缓存读写接口，用于缓存推荐算法数据
 """
 
 import json

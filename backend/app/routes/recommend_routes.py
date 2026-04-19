@@ -1,7 +1,8 @@
 """
 @File       : recommend_routes.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : 推荐菜品相关的 API
+@Description: 菜品推荐相关 API 端点
 """
 
 import logging

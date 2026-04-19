@@ -1,8 +1,8 @@
 """
 @File       : user_service.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : 用户服务层，处理用户数据的创建、查询、更新和删除逻辑。
-              采用 " 失败抛异常，成功返数据 "模式。
+@Description: 用户服务层，处理用户数据的创建、查询、更新和删除逻辑，采用 "失败抛异常，成功返数据"模式
 """
 
 import logging

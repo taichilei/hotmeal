@@ -1,9 +1,8 @@
 """
-File Name:     /app/models/dining_area.py
-Project:       hotmeal
-Author:        taichilei
-Created:       2025-04-23
-Description:   DiningArea model.
+@File       : dining_area.py
+@Author     : taichilei
+@Date       : 2025-04-23
+@Description: 用餐区域数据模型
 """
 
 import logging

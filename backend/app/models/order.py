@@ -1,8 +1,8 @@
 """
-@file         app/models/order.py
-@description  （这里写这个模块/脚本的功能简述）
-@date         2025-05-05
-@author       taichilei
+@File       : order.py
+@Author     : taichilei
+@Date       : 2025-05-05
+@Description: 订单数据模型
 """
 
 import logging

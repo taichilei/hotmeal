@@ -1,3 +1,9 @@
+"""
+@File       : context_provider.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-03-01
+@Description: 为 AI 聊天提供不同角色的上下文提供者，加载系统提示词信息
+"""
 def load_user_context() -> str:
     """
     加载针对普通用户的上下文信息。

@@ -1,9 +1,8 @@
 """
 @File       : restore_tables.py
-@Author     : ChiLei Tai
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Description: Generate SQL create table script without connecting to the database
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
+@Description: 在不连接数据库的情况下，从 SQLAlchemy 模型导出 SQL建表语句
 @Version    : 1.1.1
 """
 

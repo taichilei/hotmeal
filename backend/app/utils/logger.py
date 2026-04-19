@@ -1,9 +1,8 @@
 """
 @File       : logger.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Description: Provides function to set up application logging based on Flask config.
-@Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
+@Description: 根据 Flask 配置提供应用日志系统初始化函数，支持轮转日志和 JSON 格式
 """
 
 import logging

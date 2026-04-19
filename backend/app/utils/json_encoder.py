@@ -1,9 +1,8 @@
 """
 @File       : json_encoder.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : 自定义JSONEncoder
-
-
+@Description: 自定义 JSON 编码器，处理 datetime、Decimal、Enum、UUID 等特殊类型的序列化
 """
 
 from datetime import date, datetime

@@ -1,9 +1,9 @@
 """
 @File       : auth_service.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-04-09 (Refactored: 2025-03-01)
-@Desc       : Service responsible for user authentication (credential verification) and JWT generation.
-
-@Version    : 1.1.0 # Version updated after refactor
+@Description: 用户认证服务，负责凭证验证和 JWT 令牌生成
+@Version    : 1.1.0
 """
 
 import logging

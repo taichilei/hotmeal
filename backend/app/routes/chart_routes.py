@@ -1,9 +1,8 @@
 """
 @File       : chart_routes.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Desc       : 提供图表和统计数据的相关 API 端点。
-
-
+@Description: 提供图表和统计数据的相关 API 端点。
 """
 
 import logging

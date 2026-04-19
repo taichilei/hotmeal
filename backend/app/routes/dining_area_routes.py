@@ -1,9 +1,8 @@
 """
 @File       : dining_area_routes.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
-@Desc       : 用餐区域相关的 API 端点。
-
-
+@Description: 用餐区域相关的 API 端点。
 """
 
 import logging

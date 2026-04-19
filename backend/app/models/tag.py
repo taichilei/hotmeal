@@ -1,8 +1,8 @@
 """
-@file         app/models/tag.py
-@description  （这里写这个模块/脚本的功能简述）
-@date         2025-05-24
-@author       taichilei
+@File       : tag.py
+@Author     : taichilei
+@Date       : 2025-05-24
+@Description: 标签数据模型，用于菜品标签关联
 """
 
 # app/models/tag.py

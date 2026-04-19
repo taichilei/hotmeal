@@ -2,9 +2,8 @@
 @File       : enums.py
 @Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
-@Description: This file defines enumerations used throughout the project.
+@Description: 定义项目中使用的所有枚举类型
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
 """
 
 from enum import Enum

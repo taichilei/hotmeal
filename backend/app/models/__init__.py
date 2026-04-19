@@ -1,9 +1,8 @@
 """
-File Name:     /app/models/__init__.py
-Project:       hotmeal
-Author:        taichilei
-Created:       2025-04-23
-Description:   models init
+@文件        : __init__.py
+@作者         : taichilei
+@日期         : 2025-04-23
+@描述         : models 模块初始化，导出所有数据模型
 """
 
 from app.utils.db import db

@@ -1,10 +1,9 @@
 """
 @File       : chat_service.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
-@Desc       : 聊天服务层，处理聊天记录的创建、AI 回复处理和查询。
-              适配重构后的 Chat 模型，采用 "失败抛异常，成功返数据"模式。
-
-@Version    : 1.2.1 # 版本更新，修复类型、引用、未使用代码等问题
+@Description: 聊天服务层，处理聊天记录的创建、AI 回复处理和查询。适配重构后的 Chat 模型，采用 "失败抛异常，成功返数据"模式。
+@Version    : 1.2.1
 @Copyright  : Copyright © 2025. All rights reserved.
 """
 import logging

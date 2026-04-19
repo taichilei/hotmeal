@@ -1,9 +1,8 @@
 """
 @File       : dining_area_service.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
-@Desc       : 用餐区域 (Dining Area / Room) 服务层。
-              处理用餐区域的创建、查询、分配、释放、更新和删除逻辑。
-              采用 "失败抛异常，成功返数据"模式。
+@Description: 用餐区域服务层，处理用餐区域的创建、查询、分配、释放、更新和删除逻辑，采用 "失败抛异常，成功返数据"模式
 """
 
 import logging

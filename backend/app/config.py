@@ -1,9 +1,9 @@
 """
 @File       : config.py
+@Author     : ChiLei Tai JOU
 @Date       : 2025-03-01
 @Description: 应用配置。统一了 JWT 密钥配置。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
 """
 
 import logging
@@ -82,10 +82,6 @@ def validate_config() -> dict[str, Any]:
         sys.exit(1)  # 缺少关键配置，直接退出
 
     return {}  # 返回空字典，因为值在 Config 类中获取
-
-
-# 在应用启动前执行验证
-validate_config()
 
 
 class Config:

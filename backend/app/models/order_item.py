@@ -2,10 +2,8 @@
 @File       : order_item.py
 @Author     : ChiLei Tai JOU
 @Date       : 2025-03-01 (Refactored: 2025-03-01)
-@Description: 订单项模型类，表示订单中的每个菜品项。
-               价格使用 Decimal 类型存储以保证精度。
+@Description: 订单项模型类，表示订单中的每个菜品项。价格使用 Decimal 类型存储以保证精度。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
-
 """
 
 import logging

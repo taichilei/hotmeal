@@ -1,8 +1,8 @@
 """
-@file         app/recommend/time_decay.py
-@description  （这里写这个模块/脚本的功能简述）
-@date         2025-05-18
-@author       taichilei
+@File       : time_decay.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-05-18
+@Description: 时间衰减工具类，为推荐系统提供指数衰减、Sigmoid 贡献度、线性衰减等时间权重计算
 """
 
 import datetime

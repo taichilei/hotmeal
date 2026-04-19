@@ -1,6 +1,8 @@
 """
 @File       : error_codes.py
-# ... (其他注释保持不变) ...
+@Author     : ChiLei Tai JOU
+@Date       : 2025-03-01
+@Description: 业务错误码枚举定义，为每个错误提供统一的错误码分类和取值
 @Version    : 1.2.1 # 版本更新，添加 HTTP 相关错误码值
 """
 

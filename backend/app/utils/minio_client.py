@@ -1,10 +1,8 @@
 """
-File Name:        minio_client.py
-Project:          backend
-Author:           taichilei
-Organization:     taichilei
-Date Created:     2025-04-18
-Description:      <文件描述信息>
+@File       : minio_client.py
+@Author     : ChiLei Tai JOU
+@Date       : 2025-04-18
+@Description: MinIO 对象存储客户端封装，提供文件上传功能
 """
 import os
 import uuid
