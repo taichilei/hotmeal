@@ -1,26 +1,25 @@
-# -*- coding: utf-8 -*-
 """
 @File       : config.py
-@Date       : 2025-03-01 
+@Date       : 2025-03-01
 @Description: 应用配置。统一了 JWT 密钥配置。
 @Project    : HotMeal - Personalized Meal Ordering System Based on Recommendation Algorithms
 
 """
 
+import logging
 import os
 import sys
-import logging
 import warnings
+from typing import Any  # 导入 Optional
 
 from dotenv import load_dotenv
-from typing import Dict, Any, Optional  # 导入 Optional
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
 
-def _get_env_var(var_name: str, default: Optional[str] = None) -> Optional[str]:
+def _get_env_var(var_name: str, default: str | None = None) -> str | None:
     """获取环境变量，如果未设置且没有默认值，记录警告。"""
     value = os.getenv(var_name, default)
     # if value is None: # 移除，因为 validate_config 会处理必需变量
@@ -47,7 +46,7 @@ def _get_bool_env_var(var_name: str, default: bool = False) -> bool:
     return value_str in ['true', '1', 't', 'y', 'yes']
 
 
-def validate_config() -> Dict[str, Any]:
+def validate_config() -> dict[str, Any]:
     """验证必需的环境变量。"""
     # --- 调整：只检查必需项，值在 Config 类中获取 ---
     required_vars_desc = {
@@ -69,7 +68,6 @@ def validate_config() -> Dict[str, Any]:
     }
 
     missing_vars = []
-    config_values = {}  # 这个字典其实可以不用返回了
 
     for var, description in required_vars_desc.items():
         value = os.getenv(var)
@@ -139,11 +137,18 @@ class Config:
     # Caching configuration with default
     CACHE_TYPE = _get_env_var('CACHE_TYPE', 'SimpleCache')  # Flask-Caching 默认 SimpleCache
 
+    # --- Redis 配置 (可选，用于缓存推荐相似度矩阵) ---
+    REDIS_URL = _get_env_var('REDIS_URL')
+    REDIS_HOST = _get_env_var('REDIS_HOST', 'localhost')
+    REDIS_PORT = _get_int_env_var('REDIS_PORT', 6379)
+    REDIS_DB = _get_int_env_var('REDIS_DB', 0)
+    REDIS_PASSWORD = _get_env_var('REDIS_PASSWORD')
+
     # --- 推荐系统配置 ---
     RECOMMEND_LIMIT_DEFAULT = _get_int_env_var("RECOMMEND_LIMIT_DEFAULT", 5)
     RECOMMEND_LIMIT_MAX = _get_int_env_var("RECOMMEND_LIMIT_MAX", 20)
     RECOMMEND_STRATEGY_DEFAULT = _get_env_var("RECOMMEND_STRATEGY_DEFAULT", "weighted")
-    RECOMMEND_CACHE_SECONDS = _get_int_env_var("RECOMMEND_CACHE_SECONDS", 300)
+    RECOMMEND_CACHE_SECONDS = _get_int_env_var("RECOMMEND_CACHE_SECONDS", 86400)  # 默认缓存一天
     RECOMMEND_WEIGHT_USER = float(_get_env_var("RECOMMEND_WEIGHT_USER", "0.4"))
     RECOMMEND_WEIGHT_POPULAR = float(_get_env_var("RECOMMEND_WEIGHT_POPULAR", "0.6"))
 
@@ -182,14 +187,14 @@ class ProdConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        print(f"--- HotMeal 应用正在以 *生产模式* 运行 ---")
+        print("--- HotMeal 应用正在以 *生产模式* 运行 ---")
         # 生产环境必须有 SECRET_KEY (Config 基类已包含)
         if not cls.SECRET_KEY:
             # 这个断言理论上不会触发，因为 validate_config 检查了
             raise ValueError("生产环境中必须设置 SECRET_KEY！")
         if cls.SECRET_KEY == 'testing-secret-key' or cls.SECRET_KEY == 'dev-key':  # 避免使用弱密钥
             warnings.warn("生产环境使用了不安全的默认 SECRET_KEY！请务必在环境变量中设置强密钥。",
-                          UserWarning)
+                          UserWarning, stacklevel=2)
 
         # 配置生产环境日志记录器 (可以移到 app.utils.logger.py 中根据环境配置)
         import logging
@@ -253,7 +258,7 @@ class TestConfig(Config):
     @classmethod
     def init_app(cls, app):
         Config.init_app(app)
-        print(f"--- HotMeal 应用正在以 *测试模式* 运行 ---")
+        print("--- HotMeal 应用正在以 *测试模式* 运行 ---")
 
 
 # 配置映射字典
