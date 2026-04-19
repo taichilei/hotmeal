@@ -89,7 +89,7 @@ def create_dining_area(area_name: str, max_capacity: int | None, area_type: Area
             # 模型的 @validates 会在赋值时触发
         except ValueError as ve:  # 捕获模型验证错误
             raise ValidationError(f"创建区域时数据验证失败: {ve}",
-                                  error_code=ErrorCode.PARAM_INVALID.value)
+                                  error_code=ErrorCode.PARAM_INVALID.value) from ve
 
         logger.info(f"准备创建新用餐区域: {clean_name}, 容量: {max_capacity}, 类型: {area_type.name}")
 
@@ -104,12 +104,12 @@ def create_dining_area(area_name: str, max_capacity: int | None, area_type: Area
             db.session.rollback()
             logger.error(f"创建用餐区域 '{clean_name}' 时发生唯一性冲突: {e}", exc_info=True)
             raise BusinessError(f"Dining area name '{clean_name}' already exists.",
-                                error_code=ErrorCode.HTTP_CONFLICT.value)
+                                error_code=ErrorCode.HTTP_CONFLICT.value) from e
         except SQLAlchemyError as e:
             db.session.rollback()
             logger.error(f"创建用餐区域 '{clean_name}' 时发生数据库错误: {e}", exc_info=True)
             raise APIException("创建用餐区域失败，数据库错误。",
-                               error_code=ErrorCode.DATABASE_ERROR.value)
+                               error_code=ErrorCode.DATABASE_ERROR.value) from e
     except Exception:
         logger.exception("创建用餐区域时发生未知错误", exc_info=True)
         raise APIException("创建用餐区域失败，发生未知服务器错误。", error_code=ErrorCode.INTERNAL_SERVER_ERROR.value)
@@ -159,7 +159,7 @@ def fetch_dining_areas(area_type: AreaType | None = None,
         return data
     except SQLAlchemyError as e:
         logger.error(f"检索用餐区域列表时发生数据库错误: {e}", exc_info=True)
-        raise APIException("获取用餐区域列表失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("获取用餐区域列表失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 分配/占用区域 ---
@@ -197,7 +197,7 @@ def assign_dining_area(area_id: int, user_id: int) -> dict[str, Any]:
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"将区域 {area_id} 分配给用户 {user_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("分配用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("分配用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 释放区域 ---
@@ -228,7 +228,7 @@ def release_dining_area(area_id: int) -> dict[str, Any]:
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"释放区域 {area_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("释放用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("释放用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 更新区域信息 ---
@@ -285,7 +285,7 @@ def update_dining_area(area_id: int, update_data: dict[str, Any]) -> dict[str, A
                             updated = True
                     except KeyError:
                         raise ValidationError(f"无效的 {key} 值: {value}",
-                                              error_code=ErrorCode.PARAM_INVALID.value)
+                                              error_code=ErrorCode.PARAM_INVALID.value) from None
                 elif current_value != value:
                     # 对于 max_capacity, @validates 会处理类型和范围
                     setattr(area, key, value)  # 触发模型的 @validates
@@ -301,7 +301,7 @@ def update_dining_area(area_id: int, update_data: dict[str, Any]) -> dict[str, A
     except ValueError as ve:  # 捕获模型验证错误
         db.session.rollback()
         raise ValidationError(f"更新区域时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     if not updated:
         logger.info(f"没有为用餐区域 {area_id} 提供需要更新的信息。")
@@ -317,11 +317,11 @@ def update_dining_area(area_id: int, update_data: dict[str, Any]) -> dict[str, A
         logger.error(f"更新用餐区域 {area_id} 时发生唯一性冲突: {e}", exc_info=True)
         raise BusinessError(
             f"更新失败，用餐区域名称 '{processed_data.get('area_name')}' 可能已被占用。",
-            error_code=ErrorCode.HTTP_CONFLICT.value)
+            error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"更新用餐区域 {area_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("更新用餐区域信息失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("更新用餐区域信息失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 删除区域 ---
@@ -354,8 +354,8 @@ def delete_dining_area(area_id: int) -> bool:
         db.session.rollback()
         logger.error(f"删除用餐区域 {area_id} 时发生外键约束错误: {e}", exc_info=True)
         raise BusinessError(f"无法删除用餐区域 '{area.area_name}'，可能仍被订单等数据关联。",
-                            error_code=ErrorCode.HTTP_CONFLICT.value)
+                            error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"删除用餐区域 {area_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("删除用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("删除用餐区域失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e

@@ -104,7 +104,7 @@ class Dish(db.Model):
         try:
             price_decimal = Decimal(str(price_value))
         except (TypeError, InvalidOperation):
-            raise ValueError("价格必须是有效的数字")
+            raise ValueError("价格必须是有效的数字") from None
         if price_decimal < 0:
             raise ValueError("价格不能为负数")
         return price_decimal
@@ -128,7 +128,7 @@ class Dish(db.Model):
         try:
             rating_decimal = Decimal(str(rating_value))
         except (TypeError, InvalidOperation):
-            raise ValueError("评分必须是有效的数字")
+            raise ValueError("评分必须是有效的数字") from None
         if not (Decimal("0.00") <= rating_decimal <= Decimal("5.00")):
             raise ValueError("评分必须在 0.00 到 5.00 之间")
         return rating_decimal

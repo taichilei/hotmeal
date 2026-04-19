@@ -80,7 +80,7 @@ def create_category(name: str, description: str | None = None,
         )
     except ValueError as ve:  # 捕获模型验证错误
         raise ValidationError(f"创建分类时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     # 3. 添加到数据库
     try:
@@ -91,11 +91,11 @@ def create_category(name: str, description: str | None = None,
     except IntegrityError as e:  # 捕获数据库层面的唯一性错误
         db.session.rollback()
         logger.error(f"创建分类 '{name}' 时发生数据库约束错误: {e}", exc_info=True)
-        raise BusinessError("创建分类失败，名称已存在。", error_code=ErrorCode.HTTP_CONFLICT.value)
+        raise BusinessError("创建分类失败，名称已存在。", error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"创建分类 '{name}' 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("创建分类失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("创建分类失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 查询分类 ---
@@ -212,7 +212,7 @@ def update_category(category_id: int, update_data: dict[str, Any]) -> dict[str, 
     except ValueError as ve:  # 捕获模型验证错误
         db.session.rollback()  # 回滚以防部分属性已设置
         raise ValidationError(f"更新分类时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     if not updated:
         logger.info(f"没有为分类 {category_id} 提供需要更新的信息。")
@@ -227,11 +227,11 @@ def update_category(category_id: int, update_data: dict[str, Any]) -> dict[str, 
         db.session.rollback()
         logger.error(f"更新分类 {category_id} 时发生数据库约束错误: {e}", exc_info=True)
         raise BusinessError("更新失败，可能分类名称已被占用。",
-                            error_code=ErrorCode.HTTP_CONFLICT.value)
+                            error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"更新分类 {category_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("更新分类信息失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("更新分类信息失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 删除/恢复分类 ---
@@ -259,7 +259,7 @@ def soft_delete_category(category_id: int) -> bool:
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"软删除分类 {category_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("软删除分类失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("软删除分类失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 def restore_category(category_id: int) -> dict[str, Any]:
@@ -286,7 +286,7 @@ def restore_category(category_id: int) -> dict[str, Any]:
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"恢复分类 {category_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("恢复分类失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("恢复分类失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 def delete_category_permanently(category_id: int) -> bool:
@@ -319,8 +319,8 @@ def delete_category_permanently(category_id: int) -> bool:
         db.session.rollback()
         logger.error(f"永久删除分类 {category_id} 时发生数据库约束错误: {e}", exc_info=True)
         raise BusinessError(f"无法删除分类 '{category.name}'，可能仍被菜品等数据关联。",
-                            error_code=ErrorCode.HTTP_CONFLICT.value)
+                            error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"永久删除分类 {category_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("永久删除分类失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("永久删除分类失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e

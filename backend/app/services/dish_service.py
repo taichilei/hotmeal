@@ -86,7 +86,7 @@ def create_dish(name: str, price: Decimal | float | str, stock: int,
     except ValueError as ve:  # 捕获模型 @validates 抛出的 ValueError
         # 将模型的 ValueError 转换为服务的 ValidationError
         raise ValidationError(f"创建菜品时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     # 处理标签
     if tag_names:
@@ -111,11 +111,11 @@ def create_dish(name: str, price: Decimal | float | str, stock: int,
     except IntegrityError as e:
         db.session.rollback()
         logger.error(f"创建菜品 '{name}' 时发生数据库约束错误: {e}", exc_info=True)
-        raise BusinessError("创建菜品失败，可能名称已存在。", error_code=ErrorCode.HTTP_CONFLICT.value)
+        raise BusinessError("创建菜品失败，可能名称已存在。", error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"创建菜品 '{name}' 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("创建菜品失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("创建菜品失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 查询菜品 ---
@@ -153,7 +153,7 @@ def get_available_dishes(category_id: int | None = None) -> list[dict[str, Any]]
         return dish_list
     except SQLAlchemyError as e:
         logger.error(f"检索可用菜品列表时发生数据库错误: {e}", exc_info=True)
-        raise APIException("获取可用菜品列表失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("获取可用菜品列表失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 更新菜品 ---
@@ -199,7 +199,7 @@ def update_dish(dish_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
                 raise BusinessError(f"ID 为 {cat_id} 的分类不存在。",
                                     error_code=ErrorCode.PARAM_INVALID.value)
         except (TypeError, ValueError):
-            raise ValidationError("分类 ID 必须是整数。", error_code=ErrorCode.PARAM_INVALID.value)
+                raise ValidationError("分类 ID 必须是整数。", error_code=ErrorCode.PARAM_INVALID.value) from None
 
     # 可选字段更新
     # 若更新名称，检查唯一性（忽略大小写、空格）
@@ -234,7 +234,7 @@ def update_dish(dish_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
         # 回滚可能已部分设置的属性（虽然 SQLAlchemy 通常在 commit 前不写入）
         db.session.rollback()
         raise ValidationError(f"更新菜品时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     if not updated:
         logger.info(f"没有为菜品 {dish_id} 提供需要更新的信息。")
@@ -248,11 +248,11 @@ def update_dish(dish_id: int, update_data: dict[str, Any]) -> dict[str, Any]:
     except IntegrityError as e:
         db.session.rollback()
         logger.error(f"更新菜品 {dish_id} 时发生数据库约束错误: {e}", exc_info=True)
-        raise BusinessError("更新失败，可能菜品名称已被占用。", error_code=ErrorCode.HTTP_CONFLICT.value)
+        raise BusinessError("更新失败，可能菜品名称已被占用。", error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"更新菜品 {dish_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("更新菜品信息失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("更新菜品信息失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 删除/下架菜品 ---
@@ -281,7 +281,7 @@ def set_dish_availability(dish_id: int, is_available: bool) -> bool:
         db.session.rollback()
         logger.error(f"设置菜品 {dish_id} 可用性为 {is_available} 时发生数据库错误: {e}",
                      exc_info=True)
-        raise APIException("设置菜品可用性失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("设置菜品可用性失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 def delete_dish_permanently(dish_id: int) -> bool:
@@ -304,11 +304,11 @@ def delete_dish_permanently(dish_id: int) -> bool:
         db.session.rollback()
         logger.error(f"永久删除菜品 {dish_id} 时发生数据库约束错误: {e}", exc_info=True)
         raise BusinessError(f"无法删除菜品 '{dish.name}'，可能仍被订单等数据关联。",
-                            error_code=ErrorCode.HTTP_CONFLICT.value)
+                            error_code=ErrorCode.HTTP_CONFLICT.value) from e
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"永久删除菜品 {dish_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("永久删除菜品失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("永久删除菜品失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- (可选) 软删除接口 ---

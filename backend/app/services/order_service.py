@@ -178,12 +178,12 @@ def create_order(user_id: int,
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"创建订单时发生数据库错误: {e}", exc_info=True)
-        raise APIException("创建订单失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("创建订单失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value) from e
     except Exception as e:  # 捕获其他意外错误
         db.session.rollback()
         logger.error(f"创建订单时发生未知错误: {e}", exc_info=True)
         raise APIException("创建订单时发生未知错误。",
-                           error_code=ErrorCode.INTERNAL_SERVER_ERROR.value)
+                           error_code=ErrorCode.INTERNAL_SERVER_ERROR.value) from e
 
 
 # --- 查询订单 ---
@@ -249,7 +249,7 @@ def get_orders_by_user(user_id: int, include_items: bool = False) -> list[dict[s
         return order_list
     except SQLAlchemyError as e:
         logger.error(f"获取用户 {user_id} 订单列表时发生数据库错误: {e}", exc_info=True)
-        raise APIException("获取用户订单列表失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("获取用户订单列表失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 def list_all_orders(page: int = 1,
@@ -307,7 +307,7 @@ def list_all_orders(page: int = 1,
         return result
     except SQLAlchemyError as e:
         logger.error(f"获取订单分页列表时发生数据库错误: {e}", exc_info=True)
-        raise APIException("获取订单列表失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("获取订单列表失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 更新订单 ---
@@ -372,7 +372,7 @@ def update_order_details(order_id: int, update_data: dict[str, Any]) -> dict[str
                         updated = True
                 except ValueError:  # 无效的枚举值
                     raise ValidationError(f"无效的订单状态值: {value}",
-                                          error_code=ErrorCode.PARAM_INVALID.value)
+                                          error_code=ErrorCode.PARAM_INVALID.value) from None
             elif key == 'payment_method':
                 try:
                     new_payment_method = PaymentMethod(value) if value else None
@@ -381,7 +381,7 @@ def update_order_details(order_id: int, update_data: dict[str, Any]) -> dict[str
                         updated = True
                 except ValueError:
                     raise ValidationError(f"无效的支付方式值: {value}",
-                                          error_code=ErrorCode.PARAM_INVALID.value)
+                                          error_code=ErrorCode.PARAM_INVALID.value) from None
             elif key == 'image_url':
                 # 模型的 @validates 会检查格式和长度
                 if current_value != value:
@@ -394,7 +394,7 @@ def update_order_details(order_id: int, update_data: dict[str, Any]) -> dict[str
     except ValueError as ve:  # 捕获模型 @validates 的错误
         db.session.rollback()
         raise ValidationError(f"更新订单时数据验证失败: {ve}",
-                              error_code=ErrorCode.PARAM_INVALID.value)
+                              error_code=ErrorCode.PARAM_INVALID.value) from ve
 
     if not updated:
         logger.info(f"没有为订单 {order_id} 提供需要更新的信息。")
@@ -408,7 +408,7 @@ def update_order_details(order_id: int, update_data: dict[str, Any]) -> dict[str
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"更新订单 {order_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("更新订单信息失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("更新订单信息失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 更新订单项数量 ---
@@ -478,7 +478,7 @@ def update_order_item_quantity(order_id: int, order_item_id: int, quantity: int,
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"更新订单项数量失败: {e}", exc_info=True)
-        raise APIException("更新订单项数量失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("更新订单项数量失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 取消订单 ---
@@ -554,7 +554,7 @@ def cancel_order(order_id: int, operator_id: int, operator_role: str) -> bool:
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"取消订单 {order_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("取消订单失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("取消订单失败，数据库错误。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 # --- 删除订单 ---

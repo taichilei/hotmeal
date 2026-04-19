@@ -79,7 +79,7 @@ class Order(db.Model):
         try:
             price_decimal = Decimal(str(price_value))
         except (TypeError, InvalidOperation):
-            raise ValueError("订单价格必须是有效的数字")
+            raise ValueError("订单价格必须是有效的数字") from None
         if price_decimal < 0:
             # 理论上计算的总价不应为负，除非有退款等逻辑
             logger.warning(f"订单 {self.order_id} 的价格被设置为负数: {price_decimal}")

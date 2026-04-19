@@ -83,7 +83,7 @@ class OrderItem(db.Model):
         try:
             price_decimal = Decimal(str(price))  # 确保是 Decimal
         except (TypeError, InvalidOperation):
-            raise ValueError("单价必须是有效的数字")
+            raise ValueError("单价必须是有效的数字") from None
         if price_decimal <= 0:  # 单价通常必须大于 0
             raise ValueError("单价必须大于零")
         return price_decimal
