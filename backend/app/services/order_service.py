@@ -600,7 +600,7 @@ def delete_order_soft(order_id: int, operator_id: int, operator_role: str) -> bo
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.error(f"软删除订单 {order_id} 时发生数据库错误: {e}", exc_info=True)
-        raise APIException("软删除订单失败。", error_code=ErrorCode.DATABASE_ERROR.value)
+        raise APIException("软删除订单失败。", error_code=ErrorCode.DATABASE_ERROR.value) from e
 
 
 def delete_order_hard(order_id: int) -> bool:

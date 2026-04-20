@@ -1,7 +1,7 @@
 <!--
 @File        : Register.vue
 @Author      : taichilei
-@Date        : 2025/4/14
+@Date        : 2025-04-14
 @Description :
 -->
 <template>

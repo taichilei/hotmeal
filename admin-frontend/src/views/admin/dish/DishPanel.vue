@@ -1,7 +1,7 @@
 <!--
 @File        : DishPanel.vue
 @Author      : taichilei
-@Date        : 2025/4/22
+@Date        : 2025-04-22
 @Description : 菜品管理页面，基于 ContentPanel 通用组件
 -->
 <template>

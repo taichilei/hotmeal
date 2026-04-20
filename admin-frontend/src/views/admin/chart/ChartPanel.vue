@@ -1,7 +1,7 @@
 <!--
 @File        : ChartPanel.vue
 @Author      : taichilei
-@Date        : 2025/4/22
+@Date        : 2025-04-22
 @Description : 
 -->
 <template>

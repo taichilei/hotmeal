@@ -1,7 +1,7 @@
 <!--
 @File        : TopDishes.vue
 @Author      : taichilei
-@Date        : 2025/5/5
+@Date        : 2025-05-05
 @Description : 热门菜品排行榜柱状图
 -->
 <template>
