@@ -1,0 +1,7 @@
+dist
+node_modules
+*.local
+.cache
+.vitepress
+.idea
+.vscode

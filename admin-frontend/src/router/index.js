@@ -1,7 +1,7 @@
 /**
  @File        : router/index.js
  @Author      : taichilei
- @Date        : 2025/4/13
+ @Date        : 2025-04-13
  @Description : router configuration
  **/
 import { createRouter, createWebHistory } from 'vue-router'

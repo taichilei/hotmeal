@@ -1,7 +1,7 @@
 /****
  @File        : main.js
  @Author      : taichilei
- @Date        : 2025/4/1
+ @Date        : 2025-04-01
  @Description : This is the main file of the project.
  @Project     : admin-frontend
  @Version     : 1.0.0

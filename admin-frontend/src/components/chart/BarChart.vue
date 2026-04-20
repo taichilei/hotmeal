@@ -1,7 +1,7 @@
 <!--
 @File        : BarChart.vue
 @Author      : taichilei
-@Date        : 2025/4/22
+@Date        : 2025-04-22
 @Description : 基于 ECharts 的可复用柱状图组件
 -->
 <template>

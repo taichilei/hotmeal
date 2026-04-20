@@ -1,7 +1,7 @@
 <!--
 @File        : RingChart.vue
 @Author      : taichilei
-@Date        : 2025/4/22
+@Date        : 2025-04-22
 @Description : 基于 ECharts 的可复用环图/圆环图组件，具有苹果风格圆角与浅色背景
 -->
 <template>

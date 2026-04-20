@@ -1,7 +1,7 @@
 <!--
 @File        : Profile.vue
 @Author      : taichilei
-@Date        : 2025/5/3
+@Date        : 2025-05-03
 @Description : This is the profile page.
 -->
 <template>

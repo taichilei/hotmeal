@@ -37,3 +37,6 @@ dist/
 
 # 可能的浏览器缓存或调试工具
 .cache/
+
+# Claude Code local guidance
+CLAUDE.md
